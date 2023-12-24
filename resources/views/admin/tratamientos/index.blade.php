@@ -221,15 +221,14 @@
                                             <label for="nombreTratamientoEditar" class="form-label">Nombre del
                                                 Tratamiento</label>
                                             <input type="text" class="form-control" id="nombreTratamientoEditar"
-                                                name="nombreTratamiento" value="{{ $tratamiento->nombreTratamiento }}"
-                                                >
+                                                name="nombreTratamiento" value="{{ $tratamiento->nombreTratamiento }}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="descripcionEditar" class="form-label">Descripción</label>
-                                            <textarea class="form-control" id="descripcionEditar" name="descripcion" rows="3" >{{ $tratamiento->descripcion }}</textarea>
+                                            <textarea class="form-control" id="descripcionEditar" name="descripcion" rows="3">{{ $tratamiento->descripcion }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -249,14 +248,14 @@
                                         <div class="mb-3">
                                             <label for="precioEditar" class="form-label">Precio</label>
                                             <input type="number" class="form-control" id="precioEditar" name="precio"
-                                                value="{{ $tratamiento->precio }}" >
+                                                value="{{ $tratamiento->precio }}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="estadoEditar" class="form-label">Estado</label>
-                                            <select class="form-control" id="estadoEditar" name="estado" >
+                                            <select class="form-control" id="estadoEditar" name="estado">
                                                 <option value="a"
                                                     {{ $tratamiento->estado == 'a' ? 'selected' : '' }}>
                                                     Activo</option>
@@ -338,10 +337,16 @@
 
                 reader.readAsDataURL(input.files[0]);
             } else {
-                // Si no se selecciona ninguna imagen nueva y el campo de entrada está vacío,
-                // generar una URL única para evitar la caché
-                var timestamp = new Date().getTime();
-                preview.src = "{{ asset('img/tratamientos/' . $tratamiento->nombreImagen) }}?t=" + timestamp;
+                // Verificar si la variable $tratamiento está definida y no es nula
+                var tratamientoNombreImagen = @json($tratamiento->nombreImagen ?? null);
+
+                if (tratamientoNombreImagen) {
+                    // Si $tratamiento->nombreImagen está definido, usarlo
+                    preview.src = "{{ asset('img/tratamientos/') }}" + '/' + tratamientoNombreImagen;
+                } else {
+                    // Si no hay tratamiento definido, manejar la situación de alguna manera
+                    console.log("No hay tratamiento definido.");
+                }
             }
         }
     </script>
