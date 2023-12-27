@@ -137,8 +137,8 @@
                             </div>
                             <div class="col">
                                 <div class="col-md-12 mb-3">
-                                    <label for="usuario" class="form-label">Usuario</label>
-                                    <select class="form-control" id="usuario" name="usuario" required>
+                                    <label for="user_id" class="form-label">Usuario</label>
+                                    <select class="form-control" id="user_id" name="user_id" required>
                                         <option selected disabled>Seleccione un usuario</option>
                                         @foreach ($usuarios as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>

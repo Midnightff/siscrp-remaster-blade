@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 
 //dash adminlte
 Route::get('/inicio', [AdminController::class, 'dash'])->name('admin.dash');
-Route::get('/show-paciente', [AdminController::class, 'pacients'])->name('admin.pacientes');
+// Route::get('/show-paciente', [AdminController::class, 'pacients'])->name('admin.pacientes');
 
 //tratamientos admin
 Route::resource('tratamientos', TratamientoController::class);
