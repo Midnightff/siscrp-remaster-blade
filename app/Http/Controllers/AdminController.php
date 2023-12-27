@@ -9,4 +9,8 @@ class AdminController extends Controller
     public function dash(){
         return view('admin.dashboard');
     }
+
+    public function pacients(){
+        return view('admin.pacientes');
+    }
 }

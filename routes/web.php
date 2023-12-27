@@ -1,20 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TratamientoController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +22,12 @@ Route::middleware('auth')->group(function () {
 
 //dash adminlte
 Route::get('/inicio', [AdminController::class, 'dash'])->name('admin.dash');
+Route::get('/show-paciente', [AdminController::class, 'pacients'])->name('admin.pacientes');
+
 //tratamientos admin
 Route::resource('tratamientos', TratamientoController::class);
+require __DIR__.'/auth.php';
+
+//pacientes admin
+Route::resource('pacientes', PacienteController::class);
 require __DIR__.'/auth.php';
