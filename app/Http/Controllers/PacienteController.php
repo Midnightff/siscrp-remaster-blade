@@ -77,11 +77,50 @@ class PacienteController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        try {
+
+            $request->validate([
+                'nombres' => 'sometimes|required|string|max:45',
+                'apellidos' => 'sometimes|required|string|max:45',
+                'numeroTelefonico' => 'sometimes|required',
+            ]);
+
+            $paciente = Paciente::findOrfail($id);
+
+            if ($request->has('nombres')) {
+                $paciente->nombres = $request->nombres;
+            }
+            if ($request->has('apellidos')) {
+                $paciente->apellidos = $request->apellidos;
+            }
+            if ($request->has('numeroTelefonico')) {
+                $paciente->numeroTelefonico = $request->numeroTelefonico;
+            }
+
+            if ($paciente->update() >= 1) {
+                return redirect()->route('pacientes.index')
+                    ->with('success', 'Paciente actualizado con éxito.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('pacientes.index')
+                ->with('error', 'Paciente no ha sido actualizado.' . $e->getMessage());
+        }
     }
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $paciente = Paciente::findOrfail($id);
+            if ($paciente->delete()) {
+                return redirect()->route('pacientes.index')
+                    ->with('success', 'Paciente eliminado con éxito.');
+            } else {
+                return redirect()->route('pacientes.index')
+                    ->with('error', 'Error al eliminar el paciente. Inténtalo de nuevo.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('pacientes.index')
+                ->with('error', 'Error al eliminar el paciente. ' . $e->getMessage());
+        }
     }
 }
