@@ -42,7 +42,6 @@
                             data-target="#crearPacienteModal"> <i class="bi bi-plus-circle-fill"></i>
                             Agregar
                         </button>
-                        <button onclick="showAlert()">Click me!</button>
                         <hr>
                         <table id="pacientesTable" class="table table-hover table-sm table-bordered text-center">
                             <thead>
@@ -71,10 +70,17 @@
                                                 data-target="#editarPacienteModal{{ $paciente->id }}">
                                                 <i class="bi bi-pencil-fill text-white"></i>
                                             </button>
-                                            <button type="button" class="btn btn-danger rounded-pill"
-                                                onclick="deleteForm()">
-                                                <i class="bi bi-trash3-fill"></i>
-                                            </button>
+
+                                            <form action="{{ route('pacientes.destroy', $paciente->id) }}"
+                                                method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger rounded-pill"
+                                                onclick="confirmDelete(this)">
+                                                    <i class="bi bi-trash3-fill"></i>
+                                                </button>
+                                            </form>
+                                           
                                         </td>
                                     </tr>
                                 @endforeach
@@ -245,18 +251,24 @@
                 }
             });
         });
-
-        function deleteForm() {
+    </script>
+    <script>
+        function confirmDelete(button) {
             Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
+                title: '¿Estás seguro de eliminar el siguiente registro?',
+                text: 'Una vez eliminada, no se podrá recuperar.',
+                icon: 'warning',
                 showCancelButton: true,
-                html: `<form action="{{ route('pacientes.destroy', $paciente->id) }}" method="POST"> 
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                        </form>`
-            })
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Encuentra el elemento de formulario más cercano y envíalo
+                    $(button).closest('form').submit();
+                }
+            });
         }
     </script>
 @endsection

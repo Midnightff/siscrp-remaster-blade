@@ -74,7 +74,7 @@
                         @endif
                         <button type="button" class="btn btn-primary" data-toggle="modal"
                             data-target="#crearTratamientoModal"> <i class="bi bi-plus-circle-fill"></i>
-                            Agregar 
+                            Agregar
                         </button>
                         <table id="tratamientosTable" class="table table-hover table-sm table-bordered">
                             <thead>
@@ -114,13 +114,11 @@
                                                 method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+                                                <button title="Eliminar" type="button" class="btn btn-sm btn-danger"
+                                                    onclick="confirmDelete(this)"><i class="fa-solid fa-trash-can"></i>
+                                                    Eliminar
+                                                </button>
                                             </form>
-
-
-
-
                                         </td>
                                     </tr>
                                 @endforeach
@@ -283,11 +281,6 @@
 @endsection
 
 @section('js')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script
-        src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/datatables.js">
-    </script> --}}
     <script>
         $(document).ready(function() {
             $('#tratamientosTable').DataTable({
@@ -346,6 +339,24 @@
                     console.log("No hay tratamiento definido.");
                 }
             }
+        }
+    </script>
+    <script>
+        function confirmDelete(button) {
+            Swal.fire({
+                title: '¿Estás seguro de eliminar el siguiente registro?',
+                text: 'Una vez eliminada, no se podrá recuperar.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(button).closest('form').submit();
+                }
+            });
         }
     </script>
 @endsection
