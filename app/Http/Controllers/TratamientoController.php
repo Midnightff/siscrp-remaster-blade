@@ -14,7 +14,7 @@ class TratamientoController extends Controller
     public function index()
     {
         $tratamientos = Tratamiento::all();
-        return view('admin.tratamientos.index', compact('tratamientos'));
+        return view('admin.tratamientos', compact('tratamientos'));
     }
 
     /**

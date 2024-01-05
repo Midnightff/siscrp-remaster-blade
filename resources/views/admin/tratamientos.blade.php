@@ -1,50 +1,16 @@
 @extends('adminlte::page')
 
 @section('css')
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link
-        href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/datatables.css"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <style>
-        .container {
-            margin-top: 20px;
-        }
-
-        .card {
-            margin-bottom: 20px;
-        }
-
-        #tratamientosTable_wrapper {
-            margin-top: 20px;
-        }
-
-        .add-btn-container {
-            margin-bottom: 20px;
-        }
-
-        #tratamientosTable th,
-        #tratamientosTable td {
-            text-align: center;
-        }
-
-        #tratamientosTable thead {
-            background-color: rgb(225, 225, 225);
-
-        }
-    </style>
 @endsection
 
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <h3 class="mt-3">Lista de Tratamientos</h3>
+            <div class="col-md-12 mt-5">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Lista de Tratamientos</h3>
-                    </div>
                     <div class="card-body">
                         <!-- Mensajes de sesión -->
                         @if (session('success'))
@@ -72,11 +38,12 @@
                                 }).showToast();
                             </script>
                         @endif
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                        <button type="button" class="btn btn-success rounded-pill" data-toggle="modal"
                             data-target="#crearTratamientoModal"> <i class="bi bi-plus-circle-fill"></i>
                             Agregar
                         </button>
-                        <table id="tratamientosTable" class="table table-hover table-sm table-bordered">
+                        <hr>
+                        <table id="tratamientosTable" class="table table-hover table-sm table-bordered text-center">
                             <thead>
                                 <tr>
                                     <th>Nombre del Tratamiento</th>

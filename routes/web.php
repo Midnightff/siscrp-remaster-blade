@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TratamientoController;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,4 +32,8 @@ require __DIR__.'/auth.php';
 
 //pacientes admin
 Route::resource('pacientes', PacienteController::class);
+require __DIR__.'/auth.php';
+
+//doctores admin
+Route::resource('doctores', DoctorController::class);
 require __DIR__.'/auth.php';
