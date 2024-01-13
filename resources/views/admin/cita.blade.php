@@ -288,45 +288,46 @@
                 });
             });
 
-          // Función para mostrar solo las horas disponibles
-function mostrarHorasDisponibles(horasDisponibles, horasOcupadas) {
-    // Obtener el contenedor div donde se mostrarán las horas
-    var horasContainer = document.getElementById('horas-container');
+            // Función para mostrar solo las horas disponibles
+            function mostrarHorasDisponibles(horasDisponibles, horasOcupadas) {
+                // Obtener el contenedor div donde se mostrarán las horas
+                var horasContainer = document.getElementById('horas-container');
 
-    // Limpiar el contenido previo
-    horasContainer.innerHTML = '';
+                // Limpiar el contenido previo
+                horasContainer.innerHTML = '';
 
-    // Formatear las horas ocupadas para que coincidan con el formato de las horas disponibles
-    var horasOcupadasFormateadas = horasOcupadas.map(function (hora) {
-        return formatHour(new Date('2000-01-01 ' + hora).getHours(), new Date('2000-01-01 ' + hora).getMinutes());
-    });
+                // Formatear las horas ocupadas para que coincidan con el formato de las horas disponibles
+                var horasOcupadasFormateadas = horasOcupadas.map(function(hora) {
+                    return formatHour(new Date('2000-01-01 ' + hora).getHours(), new Date('2000-01-01 ' +
+                        hora).getMinutes());
+                });
 
-    // Filtrar las horas disponibles para excluir las horas ocupadas
-    var horasDisponiblesFiltradas = horasDisponibles.filter(function (hora) {
-        return !horasOcupadasFormateadas.includes(hora);
-    });
+                // Filtrar las horas disponibles para excluir las horas ocupadas
+                var horasDisponiblesFiltradas = horasDisponibles.filter(function(hora) {
+                    return !horasOcupadasFormateadas.includes(hora);
+                });
 
-    // Crear y agregar radio buttons por cada hora disponible
-    horasDisponiblesFiltradas.forEach(function (hora, index) {
-        // Crear un nuevo radio button
-        var radioButton = document.createElement('input');
-        radioButton.type = 'radio';
-        radioButton.name = 'hora-disponible';
-        radioButton.value = hora;
+                // Crear y agregar radio buttons por cada hora disponible
+                horasDisponiblesFiltradas.forEach(function(hora, index) {
+                    // Crear un nuevo radio button
+                    var radioButton = document.createElement('input');
+                    radioButton.type = 'radio';
+                    radioButton.name = 'hora-disponible';
+                    radioButton.value = hora;
 
-        // Crear una etiqueta (label) para el radio button
-        var label = document.createElement('label');
-        label.innerText = hora;
+                    // Crear una etiqueta (label) para el radio button
+                    var label = document.createElement('label');
+                    label.innerText = hora;
 
-        // Crear un salto de línea para separar los radio buttons
-        var lineBreak = document.createElement('br');
+                    // Crear un salto de línea para separar los radio buttons
+                    var lineBreak = document.createElement('br');
 
-        // Agregar el radio button y la etiqueta al contenedor
-        horasContainer.appendChild(radioButton);
-        horasContainer.appendChild(label);
-        horasContainer.appendChild(lineBreak);
-    });
-}
+                    // Agregar el radio button y la etiqueta al contenedor
+                    horasContainer.appendChild(radioButton);
+                    horasContainer.appendChild(label);
+                    horasContainer.appendChild(lineBreak);
+                });
+            }
 
 
 
