@@ -20,7 +20,8 @@ class PacienteController extends Controller
 
     public function create()
     {
-        //
+        $pacientes = Paciente::all();
+        return view('admin.cita', compact('pacientes'));
     }
 
     public function store(Request $request)

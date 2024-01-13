@@ -19,7 +19,7 @@ class Paciente extends Model
         'numeroTelefonico' => 'required|max:12',
         'fechaNacimiento' => 'required|date',
         'user_id' => 'max:45',
-        
+
     ];
 
     public static $customMessages = [
@@ -32,4 +32,9 @@ class Paciente extends Model
         'numeroTelefonico.max' => 'El numero de telefono excede la cantidad de :max caracteres.',
         'user_id.required' => 'El usuario es requerido.',
     ];
+
+    public function citas()
+    {
+        return $this->hasMany(Cita::class);
+    }
 }

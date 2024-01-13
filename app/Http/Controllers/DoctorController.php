@@ -50,8 +50,6 @@ class DoctorController extends Controller
                 'horarios' => 'required|array|min:1',
                 'horarios.*.dias' => 'required|array|min:1',
                 'horarios.*.dias.*' => 'in:l,m,mi,j,v,s',
-                'horarios.*.hora_inicio' => 'required|date_format:H:i',
-                'horarios.*.hora_fin' => 'required|date_format:H:i|after:horarios.*.hora_inicio',
             ]);
 
             // Usar una transacción para asegurar que todas las operaciones se realicen o ninguna
@@ -70,8 +68,6 @@ class DoctorController extends Controller
             foreach ($request->input('horarios') as $horarioData) {
                 $horario = new HorarioDoctor([
                     'dias' => implode(',', $horarioData['dias']),
-                    'hora_inicio' => $horarioData['hora_inicio'],
-                    'hora_fin' => $horarioData['hora_fin'],
                 ]);
 
                 $doctor->horarios()->save($horario);
@@ -116,14 +112,11 @@ class DoctorController extends Controller
             $request->validate([
                 'nombres' => 'required|string|max:45',
                 'apellidos' => 'required|string|max:45',
-                //'sexo' => 'required|in:m,f',
                 'numeroTelefonico' => 'required|string|max:12',
-               // 'user_id' => 'required|exists:users,id',
                 'tratamiento_id' => 'nullable|exists:tratamientos,id',
                 'horarios' => 'required|array|min:1',
                 'horarios.*.dias' => 'required|array|min:1',
                 'horarios.*.dias.*' => 'in:l,m,mi,j,v,s',
-                
             ]);
 
             // Usar una transacción para asegurar que todas las operaciones se realicen o ninguna
@@ -136,9 +129,7 @@ class DoctorController extends Controller
             $doctor->update([
                 'nombres' => $request->input('nombres'),
                 'apellidos' => $request->input('apellidos'),
-                //'sexo' => $request->input('sexo'),
                 'numeroTelefonico' => $request->input('numeroTelefonico'),
-                //'user_id' => $request->input('user_id'),
                 'tratamiento_id' => $request->input('tratamiento_id'),
             ]);
 
@@ -149,8 +140,6 @@ class DoctorController extends Controller
             foreach ($request->input('horarios') as $horarioData) {
                 $horario = new HorarioDoctor([
                     'dias' => implode(',', $horarioData['dias']),
-                    'hora_inicio' => $horarioData['hora_inicio'],
-                    'hora_fin' => $horarioData['hora_fin'],
                 ]);
 
                 $doctor->horarios()->save($horario);

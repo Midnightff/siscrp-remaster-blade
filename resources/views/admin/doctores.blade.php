@@ -94,11 +94,12 @@
                                                             $diasTraducidos = array_filter($diasTraducidos);
 
                                                             // Mostrar los días traducidos
-                                                            echo implode(', ', $diasTraducidos) . ': ' . $horario->hora_inicio . ' - ' . $horario->hora_fin;
+                                                            echo implode(', ', $diasTraducidos);
                                                         @endphp
                                                     </li>
                                                 @endforeach
                                             </ul>
+
                                         </td>
 
 
@@ -215,17 +216,6 @@
 
 
 
-                            <div class="mb-3">
-                                <label class="form-label">Hora de inicio:</label>
-                                <input type="time" class="form-control" name="horarios[0][hora_inicio]"
-                                    value="{{ old('horarios.0.hora_inicio') }}" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Hora de fin:</label>
-                                <input type="time" class="form-control" name="horarios[0][hora_fin]"
-                                    value="{{ old('horarios.0.hora_fin') }}" required>
-                            </div>
 
                             <button type="submit" class="btn btn-primary">Guardar Doctor</button>
                         </form>
@@ -311,20 +301,7 @@
                                     @endforeach
                                 </div>
 
-                                <!-- Sección para la hora de inicio -->
-                                <div class="mb-3">
-                                    <label class="form-label">Hora de inicio:</label>
-                                    <input type="time" class="form-control" name="horarios[0][hora_inicio]"
-                                        value="{{ old('horarios.0.hora_inicio', $doctor->horarios[0]->hora_inicio) }}"
-                                        required>
-                                </div>
 
-                                <!-- Sección para la hora de fin -->
-                                <div class="mb-3">
-                                    <label class="form-label">Hora de fin:</label>
-                                    <input type="time" class="form-control" name="horarios[0][hora_fin]" 
-                                        value="{{ old('horarios.0.hora_fin', $doctor->horarios[0]->hora_fin) }}" required>
-                                </div>
 
 
 

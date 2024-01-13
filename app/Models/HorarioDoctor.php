@@ -12,8 +12,6 @@ class HorarioDoctor extends Model
     protected $fillable = [
         'doctor_id',
         'dias',
-        'hora_inicio',
-        'hora_fin',
     ];
 
     public function doctor()

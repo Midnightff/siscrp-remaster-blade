@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ProfileController;
@@ -37,3 +38,13 @@ require __DIR__.'/auth.php';
 //doctores admin
 Route::resource('doctores', DoctorController::class);
 require __DIR__.'/auth.php';
+
+//citas admin
+Route::resource('citas', CitaController::class);
+Route::get('/disponibilidad', [CitaController::class, 'disponibilidad'])->name('disponibilidad');
+Route::get('/getHorasOcupadas/{fechaSeleccionada}', [CitaController::class, 'getHorasOcupadas'])->name('getHorasOcupadas');
+require __DIR__.'/auth.php';
+
+
+
+

@@ -16,10 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('doctor_id');
             $table->foreign('doctor_id')->references('id')->on('doctores');
             $table->set('dias', ['l', 'm', 'mi', 'j', 'v', 's']);
-            $table->time('hora_inicio');
-            $table->time('hora_fin');
             $table->timestamps();
-            $table->unique(['doctor_id', 'dias', 'hora_inicio', 'hora_fin']);
+            $table->unique(['doctor_id', 'dias']);
         });
     }
 
