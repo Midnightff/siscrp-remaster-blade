@@ -333,6 +333,16 @@ return [
             'icon' => 'fas fa-hospital-user',
         ],
         [
+            'text' => 'Antecedentes Médicos',
+            'route'  => 'antecedentes.index',
+            'icon' => 'fas fa-hospital-user',
+        ],
+        [
+            'text' => 'Publicaciones',
+            'route'  => 'publicaciones.index',
+            'icon' => 'fas fa-hospital-user',
+        ],
+        [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [

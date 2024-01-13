@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Paciente extends Model
 {
     use HasFactory;
+
+    public function antecedentesMedicos()
+    {
+        return $this->hasMany(AntecedentesMedicos::class, 'paciente_id');
+    }
+
     protected $fillable = [
         'nombres', 'apellidos', 'sexo', 'numeroTelefonico', 'fechaNacimiento', 'user_id'
     ];

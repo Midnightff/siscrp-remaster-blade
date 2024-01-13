@@ -21,10 +21,10 @@ return new class extends Migration
             $table->boolean('problemaHepatico');
             $table->boolean('problemaEndocrino');
             $table->boolean('problemaHemorragico');
-            $table->string('alergiaMedicamentos', 45);
+            $table->string('alergiaMedicamentos', 255)->nullable();
             $table->boolean('embarazo');
-            $table->string('otrosMedicamentosQueToma', 100);
-            $table->text('otrosDatos', 200);
+            $table->string('otrosMedicamentosQueToma', 255)->nullable();
+            $table->text('otrosDatos', 255)->nullable();
             $table->unsignedBigInteger('paciente_id');
             $table->foreign('paciente_id')->references('id')->on('pacientes');
             $table->timestamps();

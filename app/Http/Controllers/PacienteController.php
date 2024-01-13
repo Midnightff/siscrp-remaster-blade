@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PacienteController extends Controller
 {
@@ -15,6 +16,11 @@ class PacienteController extends Controller
     {
         $pacientes = Paciente::all();
         $usuarios = User::all();
+
+        foreach ($pacientes as $paciente) {
+            $paciente->fechaNacimiento = $this->calcularEdad($paciente->fechaNacimiento);
+        }
+
         return view('admin.pacientes', compact('pacientes', 'usuarios'));
     }
 
@@ -26,7 +32,6 @@ class PacienteController extends Controller
     public function store(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), Paciente::$rules, Paciente::$customMessages);
 
             if ($validator->fails()) {
@@ -35,7 +40,6 @@ class PacienteController extends Controller
             }
 
             $paciente = new Paciente();
-            // GENERAR CODIGO PARA PACIENTES
             $paciente->codigo = $this->getCodigo();
             $paciente->nombres = $request->nombres;
             $paciente->apellidos = $request->apellidos;
@@ -122,5 +126,13 @@ class PacienteController extends Controller
             return redirect()->route('pacientes.index')
                 ->with('error', 'Error al eliminar el paciente. ' . $e->getMessage());
         }
+    }
+
+    public function calcularEdad($fechaNacimiento)
+    {
+        $fechaActual = Carbon::now();
+        $birthDay = Carbon::parse($fechaNacimiento);
+        $edad = $fechaActual->diffInYears($fechaNacimiento);
+        return $edad;
     }
 }
