@@ -29,7 +29,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Verifica el tipo de usuario y redirige según su tipo
+        if (auth()->user()->type == 1) {
+            return redirect('/inicio'); // Ruta para administradores
+        } else {
+            return redirect('/'); // Ruta para usuarios normales
+        }
     }
 
     /**
@@ -45,4 +50,6 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+
 }

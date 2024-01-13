@@ -324,7 +324,7 @@ return [
         ],
         [
             'text' => 'Doctores',
-            'url'  => '',
+            'route'  => 'doctores.index',
             'icon' => 'fas fa-user-nurse',
         ],
         [
@@ -396,6 +396,7 @@ return [
             'icon_color' => 'cyan',
             'url'        => '#',
         ],
+
     ],
 
     /*
@@ -464,20 +465,21 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
                 ],
             ],
         ],
+
         'BootstrapIcons' => [
             'active' => true,
             'files' => [

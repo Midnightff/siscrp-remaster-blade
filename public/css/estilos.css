@@ -1,0 +1,23 @@
+body {
+    background: #ffe259;
+    background: linear-gradient(to right, #005187, #2196f3, #81c9fa);
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+.bg {
+    color: #fff;
+    text-align: start;
+    font-size: 85px;
+}
+
+.logoart {
+    border-radius: 50%;
+    width: 200px;
+}
+
+#logteeth {
+    border-radius: 50%;
+    width: 25px;
+}

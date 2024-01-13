@@ -33,4 +33,14 @@ class Tratamiento extends Model
         'precio.between' => 'El precio debe estar entre :min y :max.',
         'estado.in' => 'El estado debe ser "a" (activo) o "i" (inactivo).',
     ];
+
+    public function citas()
+    {
+        return $this->hasMany(Cita::class);
+    }
+
+    public function doctores()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 }

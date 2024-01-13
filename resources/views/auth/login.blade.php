@@ -1,47 +1,82 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.navbarlog')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('content')
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <img src="{{ asset('images/arteDentalLogo.jpg') }}" width="48" class="logoart" alt="Logo">
+                        </div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        {{-- LOGIN --}}
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+
+                            <div class="mb-3 input-group">
+                                <span class="input-group-text bg-info">
+                                    <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+                                </span>
+                                <input id="email" type="email" placeholder="Email"
+                                    class="form-control @error('email') is-invalid @enderror" name="email"
+                                    value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                @error('email')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 input-group">
+                                <span class="input-group-text bg-info">
+                                    <i class="bi bi-key-fill" style="font-size: 1.5rem;"></i>
+                                </span>
+                                <input id="password" type="password" placeholder="Contraseña"
+                                    class="form-control @error('password') is-invalid @enderror" name="password" required
+                                    autocomplete="current-password">
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" name="remember" id="remember"
+                                    {{ old('remember') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="remember">Recuérdame</label>
+                            </div>
+
+                            <div class="mb-3 d-grid">
+                                <button type="submit" class="btn btn-info fw-bold">
+                                    {{ __('Iniciar Sesión') }}
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="row">
+                            <div class="col text-end">
+                                <a class="btn btn-light text-dark" href="{{ route('register') }}">Aún no tengo una cuenta!</a>
+                            </div>
+                            <div class="col text-start">
+                                @if (Route::has('password.request'))
+                                    <a class="btn btn-light text-dark" href="{{ route('password.request') }}">
+                                        {{ __('Olvidé mi Contraseña') }}
+                                    </a>
+                                @endif
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <!-- Modal for Terms and Conditions -->
+    <!-- Your modal code here... -->
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    <!-- Modal for Privacy Policy -->
+    <!-- Your modal code here... -->
+@endsection

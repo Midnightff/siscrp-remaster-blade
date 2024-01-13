@@ -14,7 +14,7 @@ class AdminController extends Controller
         return view('admin.pacientes');
     }
 
-    public function antecedents(){
-        return view('admin.antecedentes');
+    public function welcome(){
+        return view('welcome');
     }
 }

@@ -66,6 +66,10 @@
                                         <td>{{ $paciente->numeroTelefonico }}</td>
                                         <td>{{ $paciente->fechaNacimiento }}&nbsp;a&#241os</td>
                                         <td>
+                                            <a href="{{ route('citas.index', ['id' => $paciente->id]) }}" class="btn btn-warning rounded-pill">
+                                                <i class="bi bi-calendar-plus-fill text-white"></i>
+                                            </a>
+                                            
                                             <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
                                                 data-target="#editarPacienteModal{{ $paciente->id }}">
                                                 <i class="bi bi-pencil-fill text-white"></i>
