@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PacienteController;
@@ -23,28 +25,44 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//dash adminlte
-Route::get('/inicio', [AdminController::class, 'dash'])->name('admin.dash');
-// Route::get('/show-paciente', [AdminController::class, 'pacients'])->name('admin.pacientes');
 
-//tratamientos admin
-Route::resource('tratamientos', TratamientoController::class);
+// Rutas de inicio de sesión y registro
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+});
+
+
+// Rutas que requieren autenticación
+Route::middleware(['auth'])->group(function () {
+
+    // Rutas del dashboard
+    Route::get('/inicio', [AdminController::class, 'dash'])->name('admin.dash');
+    require __DIR__ . '/auth.php';
+
+    // Rutas de tratamientos
+    Route::resource('tratamientos', TratamientoController::class);
+    require __DIR__ . '/auth.php';
+
+    // Rutas de pacientes
+    Route::resource('pacientes', PacienteController::class);
+    require __DIR__ . '/auth.php';
+    
+    // Rutas de doctores
+    Route::resource('doctores', DoctorController::class);
+    require __DIR__ . '/auth.php';
+
+    // Rutas de citas
+    Route::resource('citas', CitaController::class);
+    Route::get('/disponibilidad', [CitaController::class, 'disponibilidad'])->name('disponibilidad');
+    Route::get('/getHorasOcupadas/{fechaSeleccionada}', [CitaController::class, 'getHorasOcupadas'])->name('getHorasOcupadas');
+    require __DIR__ . '/auth.php';
+});
+
+
+
+
+Route::get('/', [AdminController::class, 'welcome'])->name('welcome');
 require __DIR__.'/auth.php';
-
-//pacientes admin
-Route::resource('pacientes', PacienteController::class);
-require __DIR__.'/auth.php';
-
-//doctores admin
-Route::resource('doctores', DoctorController::class);
-require __DIR__.'/auth.php';
-
-//citas admin
-Route::resource('citas', CitaController::class);
-Route::get('/disponibilidad', [CitaController::class, 'disponibilidad'])->name('disponibilidad');
-Route::get('/getHorasOcupadas/{fechaSeleccionada}', [CitaController::class, 'getHorasOcupadas'])->name('getHorasOcupadas');
-require __DIR__.'/auth.php';
-
-
-
-

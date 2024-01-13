@@ -1,0 +1,93 @@
+body {
+    background: #ffe259;
+    background: linear-gradient(to right, #005187, #2196f3, #81c9fa);
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+.bg {
+    color: #fff;
+    text-align: start;
+    font-size: 85px;
+}
+
+.logoart {
+    border-radius: 50%;
+    width: 200px;
+}
+
+#logteeth {
+    border-radius: 50%;
+    width: 25px;
+}
+
+main {
+    flex: 1;
+}
+
+.container {
+    margin-top: 50px; /* Adjust as needed */
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+}
+
+.input-group-text {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.form-control {
+    border-radius: 10px;
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    border-radius: 10px;
+}
+
+.btn-info:hover {
+    background-color: #117a8b;
+    border-color: #117a8b;
+}
+
+.btn-light {
+    color: #fff;
+    border-radius: 10px;
+}
+
+.btn-light:hover {
+    color: #fff;
+}
+
+footer {
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    color: #212529;
+    padding: 15px 0;
+    text-align: center;
+}
+.social-icon-link {
+    font-size: 1.5rem;
+    margin: 0 5px;
+    color: #17a2b8;
+}
