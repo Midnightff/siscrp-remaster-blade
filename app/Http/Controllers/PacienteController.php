@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Paciente;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -123,5 +124,93 @@ class PacienteController extends Controller
             return redirect()->route('pacientes.index')
                 ->with('error', 'Error al eliminar el paciente. ' . $e->getMessage());
         }
+    }
+
+
+    public function verificarPaciente()
+    {
+        // Verificar si el usuario tiene un paciente asociado
+        $tienePaciente = Paciente::where('user_id', Auth::user()->id)->exists();
+
+        return response()->json(['tienePaciente' => $tienePaciente]);
+    }
+
+
+    public function crearPaciente()
+    {
+        // Consulta SQL para obtener información del usuario y su paciente asociado
+        $result = DB::select('SELECT b.id, b.nombres, p.email, p.name 
+                              FROM users p 
+                              INNER JOIN pacientes b 
+                              WHERE b.user_id = p.id 
+                              AND p.id = :user_id', ['user_id' => Auth::user()->id]);
+
+        // Verificar si el resultado está vacío
+        if (empty($result)) {
+            // Si no hay paciente asociado, redirigir al formulario para crear un nuevo paciente
+            return view('cliente.paciente');
+        } else {
+            // Si hay paciente asociado, redirigir a la página de citas
+            return redirect()->route('citas.create');
+        }
+    }
+
+    public function storeCliente(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), Paciente::$rules, Paciente::$customMessages);
+
+            if ($validator->fails()) {
+                return redirect()->route('pacientes.index')
+                    ->with('error', $validator->errors()->first());
+            }
+
+            $paciente = new Paciente();
+            // GENERAR CODIGO PARA PACIENTES
+            $paciente->codigo = $this->getCodigo();
+            $paciente->nombres = $request->nombres;
+            $paciente->apellidos = $request->apellidos;
+            $paciente->sexo = $request->sexo;
+            $paciente->numeroTelefonico = $request->numeroTelefonico;
+            $paciente->fechaNacimiento = $request->fechaNacimiento;
+            $paciente->user_id = $request->user_id;
+
+            // dd($paciente);
+
+            if ($paciente->save()) {
+                return redirect()->route('citas.create')
+                    ->with('success', 'Paciente agregado con éxito.');
+            } else {
+                return redirect()->route('welcome')
+                    ->with('error', 'Error al agregar a el paciente. Inténtalo de nuevo.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('welcome')
+                ->with('error', 'Error al agregar a el paciente. ' . $e->getMessage());
+        }
+    }
+
+    public function obtenerCantidadPacientes()
+    {
+        $user = Auth::user();
+        $cantidadPacientes = Paciente::where('user_id', $user->id)->count();
+
+        return response()->json(['cantidadPacientes' => $cantidadPacientes]);
+    }
+    public function showPacientes()
+    {
+        $user = Auth::user();
+        $pacientes = Paciente::where('user_id', $user->id)->get();
+
+        return response()->json(['pacientes' => $pacientes]);
+    }
+
+    public function Pacientes()
+    {
+        $user = Auth::user();
+        $pacientes = Paciente::where('user_id', $user->id)->get();
+
+        return view('cliente.pacientes', ['pacientes' => $pacientes]);
     }
 }

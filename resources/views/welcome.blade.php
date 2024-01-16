@@ -25,7 +25,7 @@
                 </ul>
                 <br>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="{{ route('citas.index') }}" class="btn btn-outline-secondary btn-block">Agendar Cita</a>
+                    <a href="{{ route('citas.create') }}" class="btn btn-outline-secondary btn-block">Agendar Cita</a>
                 </div>
             </div>
         </div>
