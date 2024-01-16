@@ -70,6 +70,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getHorasOcupadas/{fechaSeleccionada}', [CitaController::class, 'getHorasOcupadas'])->name('getHorasOcupadas');
     Route::post('/agendar-cita', [CitaController::class, 'storeCita'])->name('store.cita');
     require __DIR__ . '/auth.php';
+
+    // Rutas de citas
+    Route::resource('publicaciones', PublicacionesController::class);
+    require __DIR__ . '/auth.php';
+
+    // Rutas de citas
+    Route::resource('antecedentes', AntecedentesController::class);
+    require __DIR__ . '/auth.php';
 });
 
 
