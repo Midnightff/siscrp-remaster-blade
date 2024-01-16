@@ -51,7 +51,7 @@
                                     <th>Nombre</th>
                                     <th>G&eacute;nero</th>
                                     <th>Tel&eacute;fono</th>
-                                    <th>Fecha de Nacimiento</th>
+                                    <th>Edad</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -64,7 +64,7 @@
                                         <td>{{ $paciente->sexo === 'm' ? 'Masculino' : ($paciente->sexo === 'f' ? 'Femenino' : $paciente->sexo) }}
                                         </td>
                                         <td>{{ $paciente->numeroTelefonico }}</td>
-                                        <td>{{ $paciente->fechaNacimiento }}</td>
+                                        <td>{{ $paciente->fechaNacimiento }}&nbsp;a&#241os</td>
                                         <td>
                                             <a href="{{ route('citas.index', ['id' => $paciente->id]) }}" class="btn btn-warning rounded-pill">
                                                 <i class="bi bi-calendar-plus-fill text-white"></i>
