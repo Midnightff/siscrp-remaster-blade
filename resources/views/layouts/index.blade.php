@@ -49,7 +49,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tratamientos</a>
+                        <a class="nav-link" href="{{ route('tratamientos.cliente') }}">Tratamientos</a>
                     </li>
 
                     <li class="nav-item">

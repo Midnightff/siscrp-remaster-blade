@@ -85,3 +85,5 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/', [AdminController::class, 'welcome'])->name('welcome');
 require __DIR__ . '/auth.php';
+
+Route::get('/tratamientos-show', [TratamientoController::class, 'indexCliente'])->name('tratamientos.cliente');
