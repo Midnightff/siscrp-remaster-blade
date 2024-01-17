@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('title', 'Antecedentes Medicos')
+
 @section('content')
     <div class="container">
         {{-- Mostrar aqui los antecedentes junto a la info del paciente --}}

@@ -12,6 +12,23 @@ class AntecedentesController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    // public function index()
+    // {
+    //     $allPacientes = Paciente::all();
+    //     $antecedentes = [];
+    //     // $pacientesByAnteced = [];
+    //     foreach ($allPacientes as $paciente ) {
+    //         $antecedente = AntecedentesMedicos::where('paciente_id', $paciente->id)->get();
+    //         $antecedentes[] = $antecedente;
+    //     }
+
+    //     dd($antecedentes);
+    //     return view('admin.antecedentes', compact('antecedentes', 'allPacientes'));
+    // }
+
+    
     public function index()
     {
         $antecedentes_medicos = AntecedentesMedicos::all();
@@ -33,11 +50,11 @@ class AntecedentesController extends Controller
         $allPacientes = Paciente::all();
         return view('admin.antecedentes', compact('antecedentes_medicos', 'pacientesByAnteced', 'allPacientes'));
     }
-
+    
     public function showAntecedenteByPacient($paciente_id)
     {
         // Obtener un paciente específico por su ID (opcional, si necesitas más datos del paciente)
-        $paciente = Paciente::find($paciente_id);
+        $paciente = Paciente::findOrFail($paciente_id);
 
         // Verificar si el paciente existe
         if (!$paciente) {
@@ -45,7 +62,11 @@ class AntecedentesController extends Controller
         }
 
         // Obtener los antecedentes médicos relacionados con el paciente específico
-        $antecedentes_medicos = AntecedentesMedicos::where('paciente_id', $paciente_id)->get();
+        $antecedentes_medicos = AntecedentesMedicos::where('paciente_id', $paciente_id)
+            ->orderBy('created_at')
+            ->get();
+
+        dd($antecedentes_medicos);
 
         // Pasar los datos a la vista
         return view('admin.antecedentes_user', compact('antecedentes_medicos', 'paciente'));

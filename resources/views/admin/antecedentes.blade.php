@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('title', 'Antecedentes Medicos')
+
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

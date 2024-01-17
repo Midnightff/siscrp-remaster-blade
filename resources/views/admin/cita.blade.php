@@ -1,4 +1,7 @@
 @extends('adminlte::page')
+
+@section('title', 'Agendar Citas')
+
 @section('content')
     <div class="container mt-5">
         <!-- Mensajes de sesión -->

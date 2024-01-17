@@ -6,7 +6,7 @@
             <h3>Publicaci&oacute;n</h3>
             <div class="col-md-12 mt-5">
                 @foreach ($publicacion as $item)
-                    <div class="card" style="width: 18rem;">
+                    <div class="card col-md-10" >
                         @if ($item->rutaImagen)
                             <img src="{{ asset('img/publicaciones/' . $item->rutaImagen) }}" class="card-img-top"
                                 alt="...">
@@ -25,5 +25,5 @@
                 @endforeach
             </div>
         </div>
-    </div>
+    </div>  
 @endsection

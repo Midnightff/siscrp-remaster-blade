@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('title','Publicaciones')
+    
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -120,8 +122,8 @@
                                 <label for="rutaImagen" class="form-label">Imagen</label>
                                 <input type="file" class="form-control" id="rutaImagen" name="rutaImagen"
                                     onchange="mostrarImagen()">
-                                <img id="imagen-preview" src="#" alt="Vista previa de la imagen"
-                                    style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;">
+                                <img id="imagen-preview" class="rounded float-start" src="#" alt="Vista previa de la imagen"
+                                    style="display: none; max-width: 100%; max-height: 200px; margin: 15px 10px 0 0;">
                             </div>
 
                             <div class="row">
@@ -155,7 +157,8 @@
                                         <select name="tratamiento_id" id="tratamiento_id" class="form-control">
                                             <option value="null" disabled selected>--Selecciona el Tratamiento--</option>
                                             @foreach ($tratamientos as $tratamiento)
-                                                <option value="{{$tratamiento->id}}">{{$tratamiento->nombreTratamiento}}</option>
+                                                <option value="{{ $tratamiento->id }}">
+                                                    {{ $tratamiento->nombreTratamiento }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -170,6 +173,103 @@
                 </div>
             </div>
         </div>
+
+        @foreach ($publicaciones as $publicacion)
+            <div class="modal fade" id="editarPublicacionModal{{ $publicacion->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="editarPublicacionModalLabel{{ $publicacion->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editarPublicacionModalLabel">Editar Publicaci&oacute;n</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ route('publicaciones.update', $publicacion->id) }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="titulo" class="form-label">Titulo de la
+                                                publicaci&oacute;n</label>
+                                            <input type="text" class="form-control" id="titulo" name="titulo"
+                                                value="{{ $publicacion->titulo }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="descripcion" class="form-label">Descripción</label>
+                                            <textarea class="form-control" rows="1" id="descripcion" name="descripcion" rows="3" required>{{ $publicacion->descripcion }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="imagenEditar" class="form-label">Imagen</label>
+                                    <input type="file" class="form-control" id="imagenEditar" name="rutaImagen"
+                                        onchange="mostrarImagenEditar()">
+                                    <img id="imagen-preview-editar" class="rounded float-start"
+                                        src="{{ asset('img/publicaciones/' . $publicacion->rutaImagen) }}"
+                                        alt="Vista previa de la imagen"
+                                        style="max-width: 100%; max-height: 200px; margin: 15px 10px 0 0;">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="precio" class="form-label">Precio</label>
+                                            <input type="number" class="form-control" id="precio" name="precio"
+                                                value="{{ $publicacion->precio }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                                            <input type="date" class="form-control" name="fechaInicio"
+                                                id="fechaInicio" value="{{ $publicacion->fechaInicio }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="fechaFinal" class="form-label">Fecha Final</label>
+                                            <input type="date" class="form-control" name="fechaFinal"
+                                                id="fechaInicio" value="{{ $publicacion->fechaFinal }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="fechaInicio" class="form-label">Tratamiento</label>
+                                            <select name="tratamiento_id" id="tratamiento_id" class="form-control">
+                                                <option value="null" disabled selected>--Selecciona el Tratamiento--
+                                                </option>
+                                                @foreach ($tratamientos as $tratamiento)
+                                                    <option value="{{ $tratamiento->id }}"
+                                                        {{ $tratamiento->id == $publicacion->tratamiento_id ? 'selected' : '' }}>
+                                                        {{ $tratamiento->nombreTratamiento }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Crear Publicaci&oacute;n</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection
 
@@ -226,6 +326,29 @@
                 };
 
                 reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function mostrarImagenEditar() {
+            var input = document.getElementById('imagenEditar');
+            var preview = document.getElementById('imagen-preview-editar');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                var publicacionRutaImagen = @json($publicacion->rutaImagen ?? null);
+
+                if (publicacionRutaImagen) {
+                    preview.src = "{{ asset('img/publicaciones/') }}" + '/' + publicacionRutaImagen;
+                } else {
+                    console.log("No hay tratamiento definido.");
+                }
             }
         }
     </script>
