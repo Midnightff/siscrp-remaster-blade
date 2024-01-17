@@ -23,7 +23,8 @@ class CitaController extends Controller
      */
     public function create()
     {
-        //
+        $tratamientos = Tratamiento::all();
+        return view('cliente.citas', compact('tratamientos'));
     }
 
     /**
@@ -145,5 +146,34 @@ class CitaController extends Controller
             ->toArray();
 
         return response()->json(['horas_ocupadas' => $horasOcupadas]);
+    }
+
+    public function storeCita(Request $request)
+    {
+        try {
+            $request->validate([
+                'dia' => 'required|date',
+                'hora' => 'required|date_format:H:i',
+                'paciente_id' => 'required|exists:pacientes,id',
+                'tratamiento_id' => 'required|exists:tratamientos,id',
+            ]);
+
+
+            $cita = new Cita([
+                'dia' => $request->input('dia'),
+                'hora' => $request->input('hora'),
+                'estado' => 'e',
+                'paciente_id' => $request->input('paciente_id'),
+                'tratamiento_id' => $request->input('tratamiento_id'),
+            ]);
+
+
+            $cita->save();
+
+            return redirect()->route('citas.create')
+                ->with('success', 'Cita creada exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Error al crear la cita: ' . $e->getMessage()]);
+        }
     }
 }

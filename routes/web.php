@@ -42,7 +42,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     // Rutas del dashboard
-    Route::get('/inicio', [AdminController::class, 'dash'])->name('admin.dash');
+    Route::get('/inicio', [AdminController::class, 'dash'])->name('admin.dash')->middleware('checkType:1');
     require __DIR__ . '/auth.php';
 
     // Rutas de tratamientos
@@ -51,6 +51,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas de pacientes
     Route::resource('pacientes', PacienteController::class);
+    Route::get('/verificar-paciente', [PacienteController::class, 'verificarPaciente'])->name('verificar-paciente');
+    Route::get('/crear-paciente', [PacienteController::class, 'crearPaciente'])->name('crear-paciente');
+    Route::post('/paciente-crear', [PacienteController::class, 'storeCliente'])->name('store-cliente');
+    Route::get('/obtener-pacientes', [PacienteController::class, 'showPacientes'])->name('obtener-pacientes');
+    Route::get('/pacientes-cliente', [PacienteController::class, 'Pacientes'])->name('pacientes');
+    Route::get('/obtener-cantidad-pacientes', [PacienteController::class, 'obtenerCantidadPacientes'])->name('obtener-cantidad-pacientes');
+
+
     require __DIR__ . '/auth.php';
 
     // Rutas de doctores
@@ -61,6 +69,31 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('citas', CitaController::class);
     Route::get('/disponibilidad', [CitaController::class, 'disponibilidad'])->name('disponibilidad');
     Route::get('/getHorasOcupadas/{fechaSeleccionada}', [CitaController::class, 'getHorasOcupadas'])->name('getHorasOcupadas');
+    Route::post('/agendar-cita', [CitaController::class, 'storeCita'])->name('store.cita');
+    require __DIR__ . '/auth.php';
+
+    // Rutas de citas
+    Route::resource('publicaciones', PublicacionesController::class);
+    require __DIR__ . '/auth.php';
+
+    // Rutas de citas
+    Route::resource('antecedentes', AntecedentesController::class);
+    require __DIR__ . '/auth.php';
+
+    //pacientes admin
+    Route::resource('pacientes', PacienteController::class);
+    require __DIR__ . '/auth.php';
+
+    //antecedentes admin
+    Route::resource('antecedentes', AntecedentesController::class);
+    require __DIR__ . '/auth.php';
+    Route::get('antecedente/{paciente_id}', [AntecedentesController::class, 'showAntecedenteByPacient'])->name('antecedente');
+
+    Route::resource('publicaciones', PublicacionesController::class);
+    require __DIR__ . '/auth.php';
+    Route::get('publicaciones/{publicacion_id}', [PublicacionesController::class, 'show'])->name('publicacion');
+
+    Route::resource('radiografias', RadiografiasController::class);
     require __DIR__ . '/auth.php';
 
     //pacientes admin
@@ -84,10 +117,18 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/', [AdminController::class, 'welcome'])->name('welcome');
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
+//pacientes admin
+Route::resource('pacientes', PacienteController::class);
+require __DIR__.'/auth.php';
+
+//antecedentes admin
+Route::resource('antecedentes', AntecedentesController::class);
+require __DIR__.'/auth.php';
+Route::get('antecedente/{paciente_id}', [AntecedentesController::class,'showAntecedenteByPacient'])->name('antecedente');
 
 //publicaciones admin
-// Route::resource('publicaciones', PublicacionesController::class);
-// require __DIR__.'/auth.php';
-// Route::get('publicaciones/{publicacion_id}', [PublicacionesController::class, 'show'])->name('publicacion');
+Route::resource('publicaciones', PublicacionesController::class);
+require __DIR__.'/auth.php';
+Route::get('publicaciones/{publicacion_id}', [PublicacionesController::class, 'show'])->name('publicacion');

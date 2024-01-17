@@ -49,11 +49,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tratamientos</a>
+                        <a class="nav-link" href="{{ route('tratamientos.cliente') }}">Tratamientos</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="return validarCita()">
+                        <a class="nav-link" href="{{ route('citas.create') }}" onclick="return validarCita()">
                             Agendar cita
                         </a>
                     </li>
@@ -91,7 +91,7 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{{ route('pacientes') }}">
                         {{ __('Pacientes') }}
                     </a>
                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -174,7 +174,7 @@
         }
         // Realiza una petición AJAX para verificar si el usuario tiene un paciente asociado
         $.ajax({
-            url: "#",
+            url: "{{ route('verificar-paciente') }}",
             method: 'GET',
             dataType: 'json',
             success: function(response) {
@@ -186,11 +186,11 @@
                         text: 'Por favor, completa todos los campos antes de agendar una cita.',
                     }).then(function() {
                         // Después de que el usuario haga clic en "OK", redirigir al formulario de creación de pacientes
-                        window.location.href = "#";
+                        window.location.href = "{{ route('crear-paciente') }}";
                     });
                 } else {
                     // Redirigir al usuario a la vista de paciente si tiene un paciente asociado
-                    window.location.href = "#";
+                    window.location.href = "{{ route('citas.create') }}";
                 }
             }
         });

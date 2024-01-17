@@ -178,4 +178,10 @@ class TratamientoController extends Controller
                 ->with('error', 'Error al eliminar el tratamiento. ' . $e->getMessage());
         }
     }
+
+    public function indexCliente()
+    {
+        $tratamientos = Tratamiento::all();
+        return view('cliente.tratamientos', compact('tratamientos'));
+    }
 }
