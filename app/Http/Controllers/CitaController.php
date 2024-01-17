@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
+use App\Models\Paciente;
 use App\Models\Tratamiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -174,6 +175,36 @@ class CitaController extends Controller
                 ->with('success', 'Cita creada exitosamente');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => 'Error al crear la cita: ' . $e->getMessage()]);
+        }
+    }
+
+    public function mostrarCitasPorPaciente(string $id)
+    {
+        try {
+            $paciente = Paciente::findOrFail($id);
+
+            $citas = Cita::where('paciente_id', $paciente->id)
+                ->where('estado', 'e')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            return view('cliente.citas-show-paciente', compact('citas', 'paciente'));
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function cancelarCita($id)
+    {
+        $cita = Cita::find($id);
+        if ($cita) {
+            $cita->estado = 'c';
+            $cita->save();
+            return redirect()->route('pacientes')->with('success', 'Cita cancelada exitosamente');
+        } else {
+            return redirect()->route('pacientes')->with('error', 'La cita no existe');
         }
     }
 }

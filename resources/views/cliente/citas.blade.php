@@ -1,26 +1,24 @@
 @extends('layouts.index')
 @section('content')
     <div class="container mt-5">
-        <!-- Mensajes de sesión -->
-        @if (session('success') || session('error'))
+        <!-- Mensajes de sesión con SweetAlert -->
+        @if (session('success'))
             <script>
-                @if (session('success'))
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: '{{ session('success') }}',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                @elseif (session('error'))
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: '{{ session('error') }}',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                @endif
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @elseif(session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             </script>
         @endif
 

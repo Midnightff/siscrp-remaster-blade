@@ -1,6 +1,27 @@
 @extends('layouts.index')
 @section('content')
     <section class="my-5 p-3" id="welcome">
+        <!-- Mensajes de sesión con SweetAlert -->
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @elseif(session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @endif
+
         <h1 class="text-uppercase text-center fw-bold">¡Sonrisas que iluminan vidas!</h1>
         <h2 class="text-uppercase text-center fw-light fst-italic">Eso es lo que hacemos</h2>
         <br>
