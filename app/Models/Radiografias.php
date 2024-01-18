@@ -9,6 +9,11 @@ class Radiografias extends Model
 {
     use HasFactory;
 
+    public function paciente()
+    {
+        return $this->belongsTo(Paciente::class, 'paciente_id');
+    }
+
     protected $fillable = [
         'nombreRadiografia', 'fechaRealizada', 'tratamiento_id', 'paciente_id'
     ];
