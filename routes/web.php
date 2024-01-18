@@ -5,6 +5,7 @@ use App\Http\Controllers\AntecedentesController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ProfileController;
@@ -73,8 +74,24 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/agendar-cita', [CitaController::class, 'storeCita'])->name('store.cita');
     Route::get('/mostrar-citas-paciente/{paciente_id}', [CitaController::class, 'mostrarCitasPorPaciente'])
         ->name('mostrar-citas-paciente');
-    Route::put('/cita/{id}/cancelar', [CitaController::class, 'cancelarCita'])
+    Route::get('/citas-agendadas', [CitaController::class, 'Citas'])->name('citas.agendadas');
+
+
+
+    Route::put('/cita/{id}/atender', [CitaController::class, 'atenderCita'])
+        ->name('citas.atender');
+
+    Route::put('/cita/{id}/cancelar', [CitaController::class, 'cancelarCitaAdmin'])
+        ->name('citas.cancelar');
+    Route::put('/cita/{id}/cancelar', [CitaController::class, 'cancelarCitaCliente'])
         ->name('cita.cancelar');
+    require __DIR__ . '/auth.php';
+
+    // Rutas de consulta
+    Route::resource('consultas', ConsultaController::class);
+    Route::get('/mostrar-consultas/{id}', [ConsultaController::class, 'mostrarConsultasPorPaciente'])->name('mostrar-consultas');
+    Route::put('/atender-consulta/{id}', [ConsultaController::class, 'atenderConsulta'])
+        ->name('consultas.atender');
     require __DIR__ . '/auth.php';
 
     // Rutas de citas

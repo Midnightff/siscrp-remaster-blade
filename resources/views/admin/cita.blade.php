@@ -46,10 +46,13 @@
                                     <label for="tratamiento_id" class="form-label">Buscar Cupos disponibles</label>
                                     <select class="form-control" name="tratamiento_id" id="tratamiento_id">
                                         <option disabled selected>Seleccione el tratamiento</option>
-                                        @foreach ($tratamientos as $tratamiento)
-                                            <option value="{{ $tratamiento->id }}">{{ $tratamiento->nombreTratamiento }}
-                                            </option>
-                                        @endforeach
+                                        @isset($tratamientos)
+                                            @foreach ($tratamientos as $tratamiento)
+                                                <option value="{{ $tratamiento->id }}">{{ $tratamiento->nombreTratamiento }}
+                                                </option>
+                                            @endforeach
+                                        @endisset
+
                                     </select>
                                 </div>
                             </div>

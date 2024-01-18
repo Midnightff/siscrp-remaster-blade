@@ -43,4 +43,10 @@ class Paciente extends Model
     {
         return $this->hasMany(Cita::class);
     }
+
+    // Relación con las consultas a través de las citas
+    public function consultas()
+    {
+        return $this->hasManyThrough(Consulta::class, Cita::class);
+    }
 }

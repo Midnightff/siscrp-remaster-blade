@@ -333,6 +333,11 @@ return [
             'icon' => 'fas fa-hospital-user',
         ],
         [
+            'text' => 'Citas Agendadas',
+            'route'  => 'citas.agendadas',
+            'icon' => 'fas fa-hospital-user',
+        ],
+        [
             'text' => 'Antecedentes Médicos',
             'route'  => 'antecedentes.index',
             'icon' => 'fas fa-hospital-user',
