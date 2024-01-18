@@ -81,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/cita/{id}/atender', [CitaController::class, 'atenderCita'])
         ->name('citas.atender');
 
-    Route::put('/cita/{id}/cancelar', [CitaController::class, 'cancelarCitaAdmin'])
+    Route::put('/citas/{id}/cancelar', [CitaController::class, 'cancelarCitaAdmin'])
         ->name('citas.cancelar');
     Route::put('/cita/{id}/cancelar', [CitaController::class, 'cancelarCitaCliente'])
         ->name('cita.cancelar');
