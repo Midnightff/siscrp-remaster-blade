@@ -48,4 +48,10 @@ class Paciente extends Model
     {
         return $this->hasMany(Radiografias::class, 'paciente_id');
     }
+
+    // Relación con las consultas a través de las citas
+    public function consultas()
+    {
+        return $this->hasManyThrough(Consulta::class, Cita::class);
+    }
 }

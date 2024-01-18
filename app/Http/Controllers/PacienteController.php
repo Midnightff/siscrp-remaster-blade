@@ -174,7 +174,7 @@ class PacienteController extends Controller
             $validator = Validator::make($request->all(), Paciente::$rules, Paciente::$customMessages);
 
             if ($validator->fails()) {
-                return redirect()->route('pacientes.index')
+                return redirect()->route('pacientes')
                     ->with('error', $validator->errors()->first());
             }
 
@@ -224,5 +224,37 @@ class PacienteController extends Controller
         $pacientes = Paciente::where('user_id', $user->id)->get();
 
         return view('cliente.pacientes', ['pacientes' => $pacientes]);
+    }
+
+    public function updateCliente(Request $request, string $id)
+    {
+        try {
+
+            $request->validate([
+                'nombres' => 'sometimes|required|string|max:45',
+                'apellidos' => 'sometimes|required|string|max:45',
+                'numeroTelefonico' => 'sometimes|required',
+            ]);
+
+            $paciente = Paciente::findOrfail($id);
+
+            if ($request->has('nombres')) {
+                $paciente->nombres = $request->nombres;
+            }
+            if ($request->has('apellidos')) {
+                $paciente->apellidos = $request->apellidos;
+            }
+            if ($request->has('numeroTelefonico')) {
+                $paciente->numeroTelefonico = $request->numeroTelefonico;
+            }
+
+            if ($paciente->update() >= 1) {
+                return redirect()->route('pacientes')
+                    ->with('success', 'Paciente actualizado con éxito.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('pacientes')
+                ->with('error', 'Paciente no ha sido actualizado.' . $e->getMessage());
+        }
     }
 }

@@ -52,6 +52,17 @@ class DoctorController extends Controller
                 'horarios.*.dias.*' => 'in:l,m,mi,j,v,s',
             ]);
 
+            // Verificar si ya existe un doctor con la misma información
+            $existingDoctor = Doctor::where('nombres', $request->input('nombres'))
+                ->where('apellidos', $request->input('apellidos'))
+                ->where('numeroTelefonico', $request->input('numeroTelefonico'))
+                ->first();
+
+            if ($existingDoctor) {
+                return redirect()->back()
+                    ->with('error', 'Ya existe un doctor con esta información.');
+            }
+
             // Usar una transacción para asegurar que todas las operaciones se realicen o ninguna
             DB::beginTransaction();
 
@@ -80,7 +91,6 @@ class DoctorController extends Controller
         } catch (\Exception $e) {
             Log::error($e);
             DB::rollBack();
-            dd($e->getMessage());
             return redirect()->back()
                 ->with('error', 'Error al crear el doctor. Por favor, inténtalo de nuevo.')
                 ->withErrors([$e->getMessage()]);

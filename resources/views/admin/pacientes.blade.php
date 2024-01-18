@@ -68,25 +68,32 @@
                                         <td>{{ $paciente->numeroTelefonico }}</td>
                                         <td>{{ $paciente->fechaNacimiento }}&nbsp;a&#241os</td>
                                         <td>
-                                            <a href="{{ route('citas.index', ['id' => $paciente->id]) }}" class="btn btn-warning rounded-pill">
+                                            <a href="{{ route('citas.index', ['id' => $paciente->id]) }}"
+                                                class="btn btn-warning rounded-pill">
                                                 <i class="bi bi-calendar-plus-fill text-white"></i>
                                             </a>
-                                            
+
+                                            <a href="{{ route('mostrar-consultas', ['id' => $paciente->id]) }}"
+                                                class="btn btn-warning rounded-pill">
+                                                <i class="bi bi-file-text"></i>
+                                            </a>
+
+
                                             <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
                                                 data-target="#editarPacienteModal{{ $paciente->id }}">
                                                 <i class="bi bi-pencil-fill text-white"></i>
                                             </button>
 
-                                            <form action="{{ route('pacientes.destroy', $paciente->id) }}"
-                                                method="POST" style="display: inline;">
+                                            <form action="{{ route('pacientes.destroy', $paciente->id) }}" method="POST"
+                                                style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-danger rounded-pill"
-                                                onclick="confirmDelete(this)">
+                                                    onclick="confirmDelete(this)">
                                                     <i class="bi bi-trash3-fill"></i>
                                                 </button>
                                             </form>
-                                           
+
                                         </td>
                                     </tr>
                                 @endforeach
