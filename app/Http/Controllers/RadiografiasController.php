@@ -71,9 +71,10 @@ class RadiografiasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
-        //
+        $radiografia = Radiografias::where('paciente_id', $id)->get();
+        return view('admin.radiografias_show', compact('radiografia'));
     }
 
     /**
