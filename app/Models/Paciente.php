@@ -54,4 +54,9 @@ class Paciente extends Model
     {
         return $this->hasManyThrough(Consulta::class, Cita::class);
     }
+
+    public function odontogramas()
+    {
+        return $this->hasMany(Odontograma::class, 'paciente_id');
+    }
 }

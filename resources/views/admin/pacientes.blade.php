@@ -73,6 +73,14 @@
                                                 <i class="bi bi-calendar-plus-fill text-white"></i>
                                             </a>
 
+                                            <a href="{{ route('odontograma.index', ['id' => $paciente->id]) }}"
+                                                class="btn btn-warning rounded-pill">
+                                                <i class="bi bi-file-text text-white"></i>
+                                           
+                                            </a>
+
+
+
                                             <a href="{{ route('mostrar-consultas', ['id' => $paciente->id]) }}"
                                                 class="btn btn-warning rounded-pill">
                                                 <i class="bi bi-file-text"></i>
