@@ -24,7 +24,7 @@ class PublicacionesController extends Controller
      */
     public function create()
     {
-        //
+        //return view('admin.publicaciones.create');
     }
 
     /**
@@ -118,5 +118,11 @@ class PublicacionesController extends Controller
             return redirect()->route('publicaciones.index')
                 ->with('error', 'Error al eliminar la publicacion. ' . $e->getMessage());
         }
+    }
+
+    public function indexCliente()
+    {
+        $publicaciones = Publicaciones::all();
+        return view('cliente.publicaciones', compact('publicaciones'));
     }
 }

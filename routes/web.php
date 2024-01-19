@@ -87,3 +87,4 @@ Route::get('/', [AdminController::class, 'welcome'])->name('welcome');
 require __DIR__ . '/auth.php';
 
 Route::get('/tratamientos-show', [TratamientoController::class, 'indexCliente'])->name('tratamientos.cliente');
+Route::get('/publicaciones-show', [PublicacionesController::class, 'indexCliente'])->name('publicaciones.cliente');
