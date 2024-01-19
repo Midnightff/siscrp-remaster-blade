@@ -36,7 +36,7 @@ class PublicacionesController extends Controller
             $validator = Validator::make($request->all(), Publicaciones::$rules, Publicaciones::$customMessages);
 
             if ($validator->fails()) {
-                return redirect()->route('publicaciones.index')->with('erro', $validator->errors()->first());
+                return redirect()->route('publicaciones.index')->with('error', $validator->errors()->first());
             }
 
             $publicacion = new Publicaciones();
@@ -53,7 +53,7 @@ class PublicacionesController extends Controller
                 $rutaImagen->move(public_path('img/publicaciones/'), $nombreImagen);
                 $publicacion->rutaImagen = $nombreImagen;
             } else {
-                $publicacion->rutaImagen = "none.jpg";
+                $publicacion->rutaImagen = "none.png";
             }
 
             if ($publicacion->save()) {

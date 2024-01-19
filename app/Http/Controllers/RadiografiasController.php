@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Paciente;
 use App\Models\Radiografias;
 use App\Models\Tratamiento;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,10 +36,9 @@ class RadiografiasController extends Controller
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), Radiografias::$rules, Tratamiento::$customMessages);
+            $validator = Validator::make($request->all(), Radiografias::$rules, Radiografias::$customMessages);
             if ($validator->fails()) {
-                return redirect()->route('radiografias.index')
-                    ->with('error', $validator->errors()->first());
+                return redirect()->route('radiografias.index')->with('error', $validator->errors()->first());
             }
 
             $radiografia = new Radiografias();
@@ -46,25 +46,23 @@ class RadiografiasController extends Controller
             $radiografia->tratamiento_id = $request->tratamiento_id;
             $radiografia->paciente_id = $request->paciente_id;
 
-            if ($request->hasFile('imagen')) {
-                $imagen = $request->file('imagen');
-                $nombreRadiografia = time() . '_' . $imagen->getClientOriginalName();
-                $imagen->move(public_path('img/radiografias/'), $nombreRadiografia);
-                $radiografia->nombreRadiografia = $nombreRadiografia;
+            if ($request->hasFile('nombreRadiografia')) {
+                $rutaImagen = $request->file('nombreRadiografia');
+                $nombreImagen = time() . '_' . $rutaImagen->getClientOriginalName();
+                $rutaImagen->move(public_path('img/radiografias/'), $nombreImagen);
+                $radiografia->nombreRadiografia = $nombreImagen;
             } else {
-                $radiografia->nombreRadiografia = "none.jpg";
+                dd($request->hasFile('nombreRadiografia'));
+                $radiografia->nombreRadiografia = "none.png";
             }
 
             if ($radiografia->save()) {
-                return redirect()->route('radiografias.index')
-                    ->with('success', 'Radiografia agregada exitosamente.');
+                return redirect()->route('radiografias.index')->with('success', 'Radiografia agregada con éxito!');
             } else {
-                return redirect()->route('radiografias.index')
-                    ->with('error', 'Error al agregar la radiografia. Inténtalo de nuevo.');
+                return redirect()->route('radiografias.index')->with('error', 'Error al agregar la Radiografia.');
             }
         } catch (\Exception $e) {
-            return redirect()->route('radiografias.index')
-                ->with('error', 'Error al agregar la radiografia. ' . $e->getMessage());
+            return redirect()->route('radiografias.index')->with('error', 'Error al agregar la publicacion. ' . $e->getMessage());
         }
     }
 
@@ -73,9 +71,11 @@ class RadiografiasController extends Controller
      */
     public function show(int $id)
     {
-        $radiografia = Radiografias::where('paciente_id', $id)->get();
+        $radiografia = Radiografias::with(['paciente', 'tratamiento'])->where('paciente_id', $id)->get();
+        // dd($radiografia);
         return view('admin.radiografias_show', compact('radiografia'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -54,32 +54,23 @@
                             </thead>
                             <tbody>
 
-                                @foreach ($antecedentes_medicos as $antecedente)
+                                @foreach ($allPacientes as $paciente)
                                     <tr>
-                                        @php
-                                            $pacienteCorrespondiente = null;
-                                            foreach ($pacientesByAnteced as $paciente) {
-                                                if ($paciente->id == $antecedente->paciente_id) {
-                                                    $pacienteCorrespondiente = $paciente;
-                                                    break;
-                                                }
-                                            }
-                                        @endphp
-
-                                        <td class="text-center">{{ $pacienteCorrespondiente->codigo }}</td>
-                                        <td>{{ $pacienteCorrespondiente->nombres }}&nbsp;{{$pacienteCorrespondiente->apellidos}}</td>
+                                        <td class="text-center">{{ $paciente->codigo }}</td>
+                                        <td>{{ $paciente->nombres }}&nbsp;{{$paciente->apellidos}}</td>
 
                                         <td class="text-center">
-                                            <a href="{{ route('antecedente', ['paciente_id' => $antecedente->paciente_id]) }}"
-                                                class="btn btn-info rounded-pill"> <i class="bi bi-eye-fill text-white"></i>
+                                            <a href="{{ route('antecedente', ['paciente_id' => $paciente->id]) }}"
+                                                class="btn btn-info rounded-pill text-white fw-bold"> <i class="bi bi-eye-fill text-white"></i>
+                                                Ver
                                             </a>
 
-                                            <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
-                                                data-target="#editarAntMedModal{{ $antecedente->id }}">
+                                            {{-- <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
+                                                data-target="#editarAntMedModal{{ $antecedentesMedicos->id }}">
                                                 <i class="bi bi-pencil-fill text-white"></i>
-                                            </button>
+                                            </button> --}}
 
-                                            <form action="{{ route('antecedentes.destroy', $antecedente->id) }}"
+                                            {{-- <form action="{{ route('antecedentes.destroy', $antecedente->id) }}"
                                                 method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
@@ -87,7 +78,7 @@
                                                     onclick="confirmDelete(this)">
                                                     <i class="bi bi-trash3-fill"></i>
                                                 </button>
-                                            </form>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach

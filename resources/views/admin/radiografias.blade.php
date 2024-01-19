@@ -60,7 +60,8 @@
                                         <td>{{ $paciente->nombres }}</td>
                                         <td>
                                             <a href="{{ route('radiografia', ['paciente_id' => $paciente->id]) }}"
-                                                class="btn btn-info rounded-pill"> <i class="bi bi-eye-fill text-white"></i>
+                                                class="btn btn-info rounded-pill fw-bold text-white"> <i class="bi bi-eye-fill text-white"></i>
+                                                Ver
                                             </a>
                                             {{-- <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
                                             data-target="#editarDoctorModal{{ $radiografia->id }}">
@@ -83,84 +84,6 @@
                 </div>
             </div>
         </div>
-        {{-- MODAL PARA VER LOS DETALLES DE LA RADIOGRAFIA --}}
-        @foreach ($tratamientos as $tratamiento)
-            <!-- Modal para editar tratamiento -->
-            <div class="modal fade" id="editarTratamientoModal{{ $tratamiento->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="editarTratamientoModalLabel{{ $tratamiento->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editarTratamientoModalLabel">Editar
-                                Tratamiento</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST" action="{{ route('tratamientos.update', $tratamiento->id) }}"
-                                enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="nombreTratamientoEditar" class="form-label">Nombre del
-                                                Tratamiento</label>
-                                            <input type="text" class="form-control" id="nombreTratamientoEditar"
-                                                name="nombreTratamiento" value="{{ $tratamiento->nombreTratamiento }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="descripcionEditar" class="form-label">Descripción</label>
-                                            <textarea class="form-control" id="descripcionEditar" name="descripcion" rows="3">{{ $tratamiento->descripcion }}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="imagenEditar" class="form-label">Imagen</label>
-                                    <input type="file" class="form-control" id="imagenEditar" name="imagen"
-                                        onchange="mostrarImagenEditar()">
-                                    <img id="imagen-preview-editar"
-                                        src="{{ asset('img/tratamientos/' . $tratamiento->nombreImagen) }}"
-                                        alt="Vista previa de la imagen"
-                                        style="max-width: 100%; max-height: 200px; margin-top: 10px;">
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="precioEditar" class="form-label">Precio</label>
-                                            <input type="number" class="form-control" id="precioEditar" name="precio"
-                                                value="{{ $tratamiento->precio }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="estadoEditar" class="form-label">Estado</label>
-                                            <select class="form-control" id="estadoEditar" name="estado">
-                                                <option value="a" {{ $tratamiento->estado == 'a' ? 'selected' : '' }}>
-                                                    Activo</option>
-                                                <option value="i" {{ $tratamiento->estado == 'i' ? 'selected' : '' }}>
-                                                    Inactivo</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Actualizar
-                                        Tratamiento</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
         {{-- Modal para POST --}}
         <div class="modal fade" id="crearRadiografiaModal" tabindex="-1" role="dialog"
             aria-labelledby="crearRadiografiaModalLabel" aria-hidden="true">
@@ -171,15 +94,13 @@
                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('radiografias.store') }}" method="POST">
+                        <form method="POST" action="{{ route('radiografias.store') }}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
-                                <label for="imagen" class="form-label">Nombre Radiografia</label>
-                                <input type="file" class="form-control" id="imagen" name="nombreRadiografia"
-                                    onchange="mostrarImagen()">
-                                <img id="imagen-preview" src="#" alt="Vista previa de la imagen"
-                                    style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;">
+                                <label for="nombreRadiografia" class="form-label">Nombre Radiografia</label>
+                                <input type="file" class="form-control" id="nombreRadiografia"
+                                    name="nombreRadiografia">
                             </div>
 
                             <div class="mb-3">
