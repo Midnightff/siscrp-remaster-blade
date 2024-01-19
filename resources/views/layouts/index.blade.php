@@ -45,7 +45,7 @@
                         <a class="nav-link" href="{{route('welcome')}}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Publicaciones</a>
+                        <a class="nav-link" href="{{ route('publicaciones.cliente') }}">Publicaciones</a>
                     </li>
 
                     <li class="nav-item">

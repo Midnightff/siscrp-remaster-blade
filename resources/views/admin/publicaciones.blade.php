@@ -61,9 +61,7 @@
                                         <td>{{ $publicacion->fechaInicio }}</td>
                                         <td>{{ $publicacion->fechaFinal }}</td>
                                         <td>
-                                            <a href="{{ route('publicacion', ['publicacion_id' => $publicacion->id]) }}"
-                                                class="btn btn-info rounded-pill"> <i class="bi bi-eye-fill text-white"></i>
-                                            </a>
+                                           
 
                                             <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
                                                 data-target="#editarPublicacionModal{{ $publicacion->id }}">
