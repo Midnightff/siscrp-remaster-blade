@@ -28,7 +28,7 @@
                         <div class="card-footer bg-light d-flex justify-content-between">
                             <div>
                                 <!-- Botón de Ver Citas con ícono -->
-                                <a href="#" class="btn btn-secondary rounded-pill">
+                                <a href="{{route('citas.create')}}" class="btn btn-secondary rounded-pill">
                                     <i class="bi bi-calendar-range-fill"></i> Agendar Citas
                                 </a>
                             </div>
