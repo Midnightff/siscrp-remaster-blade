@@ -2,6 +2,27 @@
 
 @section('content')
     <div class="container mt-4">
+        <!-- Mensajes de sesión con SweetAlert -->
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @elseif(session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @endif
+
         <br>
         <br>
         <button type="button" class="btn btn-success p-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -26,14 +47,15 @@
                             </div>
                             <div class="card-footer bg-light d-flex justify-content-between">
                                 <div>
-                                    <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
-                                        data-target="#editarPacienteModal{{ $paciente->id }}">
-                                        <i class="bi bi-pencil-fill text-white"></i>
+                                    <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+                                        data-bs-target="#editarPacienteModal{{ $paciente->id }}">
+                                        <i class="bi bi-pencil-fill text-white"></i> Editar
                                     </button>
                                 </div>
                                 <div>
                                     <!-- Botón de Ver Citas con ícono -->
-                                    <a href="#" class="btn btn-secondary rounded-pill">
+                                    <a href="{{ route('mostrar-citas-paciente', ['paciente_id' => $paciente->id]) }}"
+                                        class="btn btn-secondary rounded-pill">
                                         <i class="bi bi-calendar-range-fill"></i> Ver Citas
                                     </a>
                                 </div>
@@ -126,7 +148,7 @@
                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="{{ route('pacientes.update', $paciente->id) }}"
+                        <form method="POST" action="{{ route('update-cliente', $paciente->id) }}"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -180,7 +202,7 @@
             transform: scale(1.1);
         }
     </style>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendar;

@@ -5,12 +5,17 @@ use App\Http\Controllers\AntecedentesController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\OdontogramaController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicacionesController;
+use App\Http\Controllers\RadiografiasController;
 use App\Http\Controllers\TratamientoController;
 use App\Models\Doctor;
+use App\Models\Odontograma;
+use App\Models\Radiografias;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -53,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/verificar-paciente', [PacienteController::class, 'verificarPaciente'])->name('verificar-paciente');
     Route::get('/crear-paciente', [PacienteController::class, 'crearPaciente'])->name('crear-paciente');
     Route::post('/paciente-crear', [PacienteController::class, 'storeCliente'])->name('store-cliente');
+    Route::put('/paciente-actualizar/{id}', [PacienteController::class, 'updateCliente'])->name('update-cliente');
     Route::get('/obtener-pacientes', [PacienteController::class, 'showPacientes'])->name('obtener-pacientes');
     Route::get('/pacientes-cliente', [PacienteController::class, 'Pacientes'])->name('pacientes');
     Route::get('/obtener-cantidad-pacientes', [PacienteController::class, 'obtenerCantidadPacientes'])->name('obtener-cantidad-pacientes');
@@ -69,6 +75,26 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/disponibilidad', [CitaController::class, 'disponibilidad'])->name('disponibilidad');
     Route::get('/getHorasOcupadas/{fechaSeleccionada}', [CitaController::class, 'getHorasOcupadas'])->name('getHorasOcupadas');
     Route::post('/agendar-cita', [CitaController::class, 'storeCita'])->name('store.cita');
+    Route::get('/mostrar-citas-paciente/{paciente_id}', [CitaController::class, 'mostrarCitasPorPaciente'])
+        ->name('mostrar-citas-paciente');
+    Route::get('/citas-agendadas', [CitaController::class, 'Citas'])->name('citas.agendadas');
+
+
+
+    Route::put('/cita/{id}/atender', [CitaController::class, 'atenderCita'])
+        ->name('citas.atender');
+
+    Route::put('/citas/{id}/cancelar', [CitaController::class, 'cancelarCitaAdmin'])
+        ->name('citas.cancelar');
+    Route::put('/cita/{id}/cancelar', [CitaController::class, 'cancelarCitaCliente'])
+        ->name('cita.cancelar');
+    require __DIR__ . '/auth.php';
+
+    // Rutas de consulta
+    Route::resource('consultas', ConsultaController::class);
+    Route::get('/mostrar-consultas/{id}', [ConsultaController::class, 'mostrarConsultasPorPaciente'])->name('mostrar-consultas');
+    Route::put('/atender-consulta/{id}', [ConsultaController::class, 'atenderConsulta'])
+        ->name('consultas.atender');
     require __DIR__ . '/auth.php';
 
     // Rutas de citas
@@ -78,6 +104,27 @@ Route::middleware(['auth'])->group(function () {
     // Rutas de citas
     Route::resource('antecedentes', AntecedentesController::class);
     require __DIR__ . '/auth.php';
+
+    //pacientes admin
+    Route::resource('pacientes', PacienteController::class);
+    require __DIR__ . '/auth.php';
+
+    //antecedentes admin
+    Route::resource('antecedentes', AntecedentesController::class);
+    require __DIR__ . '/auth.php';
+    Route::get('antecedente/{paciente_id}', [AntecedentesController::class, 'showAntecedenteByPacient'])->name('antecedente');
+
+    Route::resource('publicaciones', PublicacionesController::class);
+    require __DIR__ . '/auth.php';
+    Route::get('publicaciones/{publicacion_id}', [PublicacionesController::class, 'show'])->name('publicacion');
+
+    Route::resource('radiografias', RadiografiasController::class);
+    require __DIR__ . '/auth.php';
+
+    Route::resource('odontograma', OdontogramaController::class);
+    Route::get('/odontogramas/{id}', [OdontogramaController::class, 'odontogramasPorPaciente'])->name('odontogramasPorPaciente');
+    require __DIR__ . '/auth.php';
+    Route::get('radiografias/{paciente_id}', [RadiografiasController::class, 'show'])->name('radiografia');
 });
 
 
@@ -85,6 +132,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/', [AdminController::class, 'welcome'])->name('welcome');
 require __DIR__ . '/auth.php';
+
 
 Route::get('/tratamientos-show', [TratamientoController::class, 'indexCliente'])->name('tratamientos.cliente');
 Route::get('/publicaciones-show', [PublicacionesController::class, 'indexCliente'])->name('publicaciones.cliente');

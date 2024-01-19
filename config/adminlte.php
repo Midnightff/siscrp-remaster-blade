@@ -14,8 +14,8 @@ return [
     |
     */
 
-    'title' => '',
-    'title_prefix' => '',
+    'title' => 'true',
+    'title_prefix' => 'ArtDent |',
     'title_postfix' => '',
 
     /*
@@ -30,8 +30,8 @@ return [
     |
     */
 
-    'use_ico_only' => false,
-    'use_full_favicon' => false,
+    'use_ico_only' => true,
+    'use_full_favicon' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -333,6 +333,11 @@ return [
             'icon' => 'fas fa-hospital-user',
         ],
         [
+            'text' => 'Citas Agendadas',
+            'route'  => 'citas.agendadas',
+            'icon' => 'fas fa-hospital-user',
+        ],
+        [
             'text' => 'Antecedentes Médicos',
             'route'  => 'antecedentes.index',
             'icon' => 'fas fa-hospital-user',
@@ -340,6 +345,11 @@ return [
         [
             'text' => 'Publicaciones',
             'route'  => 'publicaciones.index',
+            'icon' => 'fas fa-hospital-user',
+        ],
+        [
+            'text' => 'Radiografias',
+            'route'  => 'radiografias.index',
             'icon' => 'fas fa-hospital-user',
         ],
         [

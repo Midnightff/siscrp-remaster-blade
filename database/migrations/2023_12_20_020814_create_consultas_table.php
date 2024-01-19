@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('consultas', function (Blueprint $table) {
             $table->id();
             $table->enum('estado', ['e', 'c', 'a'])->default('e');
-            $table->date('fechaConsulta');
             $table->string('observacion', 100);
             $table->decimal('costoConsulta', 8, 2);
             $table->unsignedBigInteger('cita_id');
             $table->foreign('cita_id')->references('id')->on('citas');
-            $table->unsignedBigInteger('doctor_id');
-            $table->foreign('doctor_id')->references('id')->on('doctores');
             $table->timestamps();
         });
     }

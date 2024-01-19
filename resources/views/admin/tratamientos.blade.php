@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('title', 'Tratamientos')
+
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -73,17 +75,17 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                            <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
                                                 data-target="#editarTratamientoModal{{ $tratamiento->id }}">
-                                                Editar
+                                                <i class="bi bi-pencil-fill text-white"></i>
                                             </button>
                                             <form action="{{ route('tratamientos.destroy', $tratamiento->id) }}"
                                                 method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button title="Eliminar" type="button" class="btn btn-sm btn-danger"
+                                                <button title="Eliminar" type="button" class="btn btn-danger rounded-pill"
                                                     onclick="confirmDelete(this)"><i class="fa-solid fa-trash-can"></i>
-                                                    Eliminar
+                                                    <i class="bi bi-trash3-fill"></i>
                                                 </button>
                                             </form>
                                         </td>

@@ -36,7 +36,7 @@ class PublicacionesController extends Controller
             $validator = Validator::make($request->all(), Publicaciones::$rules, Publicaciones::$customMessages);
 
             if ($validator->fails()) {
-                return redirect()->route('publicaciones.index')->with('erro', $validator->errors()->first());
+                return redirect()->route('publicaciones.index')->with('error', $validator->errors()->first());
             }
 
             $publicacion = new Publicaciones();
@@ -53,7 +53,7 @@ class PublicacionesController extends Controller
                 $rutaImagen->move(public_path('img/publicaciones/'), $nombreImagen);
                 $publicacion->rutaImagen = $nombreImagen;
             } else {
-                $publicacion->rutaImagen = "none.jpg";
+                $publicacion->rutaImagen = "none.png";
             }
 
             if ($publicacion->save()) {
@@ -91,7 +91,48 @@ class PublicacionesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $request->validate([
+                'titulo' => 'sometimes|required|max:45|unique:publicaciones,titulo',
+                'descripcion' => 'sometimes|required|string',
+                'rutaImagen' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'precio' => 'sometimes|required|numeric|between:0,999999.99',
+                'fechaInicio' => 'required|date',
+                'fechaFinal' => 'required|date',
+                'tratamiento_id' => 'numeric'
+            ]);
+
+            // dd($request);
+            
+            $publicacion = Publicaciones::findOrFail($id);
+
+            $canBeUpdated = ['titulo', 'descripcion', 'precio', 'fechaInicio', 'fechaFinal', 'tratamiento_id'];
+
+            if ($request->hasFile('rutaImagen')) {
+                $imagen = $request->file('rutaImagen');
+                $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+                $imagen->move(public_path('img/publicaciones/'), $nombreImagen);
+                $publicacion->rutaImagen = $nombreImagen;
+            }
+
+            foreach ($canBeUpdated as $data) {
+                if ($request->has($data)) {
+                    $publicacion->$data = $request->$data;
+                }
+            }
+
+
+            if ($publicacion->save()) {
+                return redirect()->route('publicaciones.index')
+                    ->with('success', 'Publicacion actualizada exitosamente.');
+            } else {
+                return redirect()->route('publicaciones.index')
+                    ->with('error', 'Error al actualizar la publicacion. Inténtalo de nuevo.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('publicaciones.index')
+                ->with('error', 'Error al actualizar esta publicacion. ' . $e->getMessage());
+        }
     }
 
     /**

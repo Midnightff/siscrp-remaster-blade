@@ -12,43 +12,38 @@ class AntecedentesController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    // public function index()
+    // {
+    //     $allPacientes = Paciente::all();
+    //     $antecedentes = [];
+    //     // $pacientesByAnteced = [];
+    //     foreach ($allPacientes as $paciente ) {
+    //         $antecedente = AntecedentesMedicos::where('paciente_id', $paciente->id)->get();
+    //         $antecedentes[] = $antecedente;
+    //     }
+
+    //     dd($antecedentes);
+    //     return view('admin.antecedentes', compact('antecedentes', 'allPacientes'));
+    // }
+
+
     public function index()
     {
-        $antecedentes_medicos = AntecedentesMedicos::all();
-
-        // Inicializar un array para almacenar todos los pacientes
-        $pacientesByAnteced = [];
-
-        foreach ($antecedentes_medicos as $antecedente) {
-            // Buscar el paciente por el id en cada antecedente
-            $paciente = Paciente::find($antecedente->paciente_id);
-
-            // Añadir el paciente al array de pacientes
-            if ($paciente) {
-                $pacientesByAnteced[] = $paciente;
-            }
-        }
-
-        // dd($pacientesByAnteced);
         $allPacientes = Paciente::all();
-        return view('admin.antecedentes', compact('antecedentes_medicos', 'pacientesByAnteced', 'allPacientes'));
+        $antecedentesMedicos = AntecedentesMedicos::with('paciente')->get();
+
+        return view('admin.antecedentes', compact('antecedentesMedicos', 'allPacientes'));
     }
 
     public function showAntecedenteByPacient($paciente_id)
     {
-        // Obtener un paciente específico por su ID (opcional, si necesitas más datos del paciente)
-        $paciente = Paciente::find($paciente_id);
+        $antecedentesMedicos = AntecedentesMedicos::with('paciente')
+            ->where('paciente_id', $paciente_id)
+            ->get();
 
-        // Verificar si el paciente existe
-        if (!$paciente) {
-            return redirect()->route('admin.antecedentes')->with('error', 'El paciente no existe!.');
-        }
-
-        // Obtener los antecedentes médicos relacionados con el paciente específico
-        $antecedentes_medicos = AntecedentesMedicos::where('paciente_id', $paciente_id)->get();
-
-        // Pasar los datos a la vista
-        return view('admin.antecedentes_user', compact('antecedentes_medicos', 'paciente'));
+        return view('admin.antecedentes_user', compact('antecedentesMedicos'));
     }
 
     /**

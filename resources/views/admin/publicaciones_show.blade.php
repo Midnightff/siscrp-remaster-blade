@@ -6,12 +6,14 @@
             <h3>Publicaci&oacute;n</h3>
             <div class="col-md-12 mt-5">
                 @foreach ($publicacion as $item)
-                    <div class="card" style="width: 18rem;">
-                        @if ($item->rutaImagen)
+                    <div class="card col-md-4">
+                        @if ($item->rutaImagen != 'none.png')
                             <img src="{{ asset('img/publicaciones/' . $item->rutaImagen) }}" class="card-img-top"
-                                alt="...">
+                                alt="ad-image" style="max-width: 100%; max-height: 200px; margin: 5px px;">
                         @else
-                            Sin Imagen
+                            <img id="imagen-preview-editar" class="border rounded"
+                                src="{{ asset('img/publicaciones/none.png') }}" alt="Vista previa de la imagen"
+                                style="max-width: 100%; max-height: 200px; margin-top: 10px;">
                         @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->titulo }}</h5>
