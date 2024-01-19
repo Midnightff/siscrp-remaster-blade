@@ -7,12 +7,14 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\OdontogramaController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicacionesController;
 use App\Http\Controllers\RadiografiasController;
 use App\Http\Controllers\TratamientoController;
 use App\Models\Doctor;
+use App\Models\Odontograma;
 use App\Models\Radiografias;
 use Illuminate\Support\Facades\Route;
 
@@ -119,21 +121,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('radiografias', RadiografiasController::class);
     require __DIR__ . '/auth.php';
 
-    // //pacientes admin
-    // Route::resource('pacientes', PacienteController::class);
-    // require __DIR__ . '/auth.php';
-
-    // //antecedentes admin
-    // Route::resource('antecedentes', AntecedentesController::class);
-    // require __DIR__ . '/auth.php';
-    // Route::get('antecedente/{paciente_id}', [AntecedentesController::class, 'showAntecedenteByPacient'])->name('antecedente');
-
-    // Route::resource('publicaciones', PublicacionesController::class);
-    // require __DIR__ . '/auth.php';
-    // Route::get('publicaciones/{publicacion_id}', [PublicacionesController::class, 'show'])->name('publicacion');
-
-    // Route::resource('radiografias', RadiografiasController::class);
-    // require __DIR__ . '/auth.php';
+    Route::resource('odontograma', OdontogramaController::class);
+    Route::get('/odontogramas/{id}', [OdontogramaController::class, 'odontogramasPorPaciente'])->name('odontogramasPorPaciente');
+    require __DIR__ . '/auth.php';
     Route::get('radiografias/{paciente_id}', [RadiografiasController::class, 'show'])->name('radiografia');
 });
 
