@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('odontograma', function (Blueprint $table) {
             $table->id();
             $table->integer('numeroDiente');
-            $table->set('estadoDiente', ['b', 'f', 'r', 'e', 'p'])->default('b');
+            $table->char('estadoDiente', 1)->default('b');
             $table->set('seccionDiente', ['1', '2', '3', '4', '5']);
             $table->text('observaciones')->nullable();
             $table->unsignedBigInteger('paciente_id');
             $table->timestamps();
-
+    
             $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
         });
     }

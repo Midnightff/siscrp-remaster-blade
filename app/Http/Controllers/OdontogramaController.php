@@ -17,14 +17,20 @@ class OdontogramaController extends Controller
         return view('admin.odontograma', compact('pacientes'));
     }
 
-    
+    public function odontogramasPorPaciente($id)
+    {
+        $odontogramas = Odontograma::where('paciente_id', $id)->get();
+
+        return redirect()->route('odontograma.index')->with('odontogramas', $odontogramas);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -33,17 +39,16 @@ class OdontogramaController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validación de datos
             $request->validate([
                 'numeroDiente' => 'required|integer',
-                'estadoDiente' => 'required|in:b,f,r,e,p',
+                'estadoDiente' => 'required|in:b,f,r,e,p,c,o,a',
                 'seccionDiente' => [
                     'required',
                     'regex:/^(\d,)*\d$/',
                     function ($attribute, $value, $fail) {
                         $secciones = explode(',', $value);
                         $seccionesValidas = ['1', '2', '3', '4', '5'];
-    
+
                         foreach ($secciones as $seccion) {
                             if (!in_array($seccion, $seccionesValidas)) {
                                 $fail("La sección diente '$seccion' es inválida.");
@@ -54,28 +59,22 @@ class OdontogramaController extends Controller
                 'observaciones' => 'nullable|string',
                 'paciente_id' => 'required|exists:pacientes,id',
             ]);
-    
-            // Crear un nuevo odontograma
-            $odontograma = new Odontograma([
+
+            Odontograma::create([
                 'numeroDiente' => $request->input('numeroDiente'),
                 'estadoDiente' => $request->input('estadoDiente'),
                 'seccionDiente' => $request->input('seccionDiente'),
                 'observaciones' => $request->input('observaciones'),
                 'paciente_id' => $request->input('paciente_id'),
             ]);
-    
-            // Guardar el odontograma
-            $odontograma->save();
-    
-            return redirect()->route('odontograma.index')
-                ->with('success', 'Guardado exitosamente');
+
+            return redirect()->route('odontograma.index', ['id' => $request->input('paciente_id')])->with('success', 'Guardado exitosamente');
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            return redirect()->route('odontograma.index')
-                ->with('error', 'Error al guardar');
+            return redirect()->route('odontograma.index')->with('error', 'Error al guardar');
         }
     }
-    
+
+
     /**
      * Display the specified resource.
      */
@@ -106,5 +105,29 @@ class OdontogramaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function opcionesEstadoDiente()
+    {
+        $opciones = [
+            'b' => 'Bueno', 'f' => 'Fracturado', 'r' => 'Restaurado', 'e' => 'Extraído', 'p' => 'Puente', 'c' => 'Carie',
+            'o' => 'Obturación',
+            'a' => 'Ausente'
+        ];
+
+        return response()->json(['opciones' => $opciones]);
+    }
+
+    public function obtenerDatosPorNumeroDiente($paciente_id, $numeroDiente)
+    {
+        try {
+            // Buscar todos los registros que coincidan con el número de diente y el ID del paciente
+            $datosDiente = Odontograma::where('numeroDiente', $numeroDiente)
+                ->where('paciente_id', $paciente_id)
+                ->get();
+
+            return response()->json(['datosDiente' => $datosDiente], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener los datos del diente'], 500);
+        }
     }
 }

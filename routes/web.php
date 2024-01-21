@@ -123,6 +123,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('odontograma', OdontogramaController::class);
     Route::get('/odontogramas/{id}', [OdontogramaController::class, 'odontogramasPorPaciente'])->name('odontogramasPorPaciente');
+    Route::get('/opciones', [OdontogramaController::class, 'opcionesEstadoDiente']);
+    Route::get('/odontograma/obtenerDatosPorNumeroDiente/{paciente_id}/{numeroDiente}', [OdontogramaController::class, 'obtenerDatosPorNumeroDiente']);
     require __DIR__ . '/auth.php';
     Route::get('radiografias/{paciente_id}', [RadiografiasController::class, 'show'])->name('radiografia');
 });
@@ -136,3 +138,11 @@ require __DIR__ . '/auth.php';
 
 Route::get('/tratamientos-show', [TratamientoController::class, 'indexCliente'])->name('tratamientos.cliente');
 Route::get('/publicaciones-show', [PublicacionesController::class, 'indexCliente'])->name('publicaciones.cliente');
+
+function calcularEdad($fechaNacimiento)
+{
+    $fechaNacimiento = new DateTime($fechaNacimiento);
+    $hoy = new DateTime();
+    $edad = $hoy->diff($fechaNacimiento);
+    return $edad->y;
+}

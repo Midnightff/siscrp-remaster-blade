@@ -16,11 +16,9 @@ class PacienteController extends Controller
     public function index()
     {
         $pacientes = Paciente::all();
+        
         $usuarios = User::all();
 
-        foreach ($pacientes as $paciente) {
-            $paciente->fechaNacimiento = $this->calcularEdad($paciente->fechaNacimiento);
-        }
 
         return view('admin.pacientes', compact('pacientes', 'usuarios'));
     }
@@ -88,6 +86,7 @@ class PacienteController extends Controller
             $request->validate([
                 'nombres' => 'sometimes|required|string|max:45',
                 'apellidos' => 'sometimes|required|string|max:45',
+                'fechaNacimiento' => 'sometimes|date|before_or_equal:' . now(),
                 'numeroTelefonico' => 'sometimes|required',
             ]);
 
@@ -98,6 +97,9 @@ class PacienteController extends Controller
             }
             if ($request->has('apellidos')) {
                 $paciente->apellidos = $request->apellidos;
+            }
+            if ($request->has('fechaNacimiento')) {
+                $paciente->fechaNacimiento = $request->fechaNacimiento;
             }
             if ($request->has('numeroTelefonico')) {
                 $paciente->numeroTelefonico = $request->numeroTelefonico;
@@ -130,13 +132,7 @@ class PacienteController extends Controller
         }
     }
 
-    public function calcularEdad($fechaNacimiento)
-    {
-        $fechaActual = Carbon::now();
-        $birthDay = Carbon::parse($fechaNacimiento);
-        $edad = $fechaActual->diffInYears($fechaNacimiento);
-        return $edad;
-    }
+
 
 
     public function verificarPaciente()

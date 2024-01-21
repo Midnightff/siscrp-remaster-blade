@@ -66,26 +66,26 @@
                                         <td>{{ $paciente->sexo === 'm' ? 'Masculino' : ($paciente->sexo === 'f' ? 'Femenino' : $paciente->sexo) }}
                                         </td>
                                         <td>{{ $paciente->numeroTelefonico }}</td>
-                                        <td>{{ $paciente->fechaNacimiento }}&nbsp;a&#241os</td>
+                                        <td>
+                                            @if ($paciente->fechaNacimiento)
+                                                {{ calcularEdad($paciente->fechaNacimiento) }} años
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('citas.index', ['id' => $paciente->id]) }}"
-                                                class="btn btn-warning rounded-pill">
+                                                class="btn btn-success rounded-pill">
                                                 <i class="bi bi-calendar-plus-fill text-white"></i>
                                             </a>
 
                                             <a href="{{ route('odontograma.index', ['id' => $paciente->id]) }}"
-                                                class="btn btn-warning rounded-pill">
-                                                <i class="bi bi-file-text text-white"></i>
-                                           
+                                                class="btn btn-info rounded-pill">
+                                                <i class="fas fa-tooth fa-inverse"></i>
                                             </a>
-
-
 
                                             <a href="{{ route('mostrar-consultas', ['id' => $paciente->id]) }}"
-                                                class="btn btn-warning rounded-pill">
+                                                class="btn btn-primary rounded-pill">
                                                 <i class="bi bi-file-text"></i>
                                             </a>
-
 
                                             <button type="button" class="btn btn-warning rounded-pill" data-toggle="modal"
                                                 data-target="#editarPacienteModal{{ $paciente->id }}">
@@ -229,27 +229,37 @@
                                     </div>
                                 </div>
 
-                                <div class="col">
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="numeroTelefonico" class="form-label">Tel&eacute;fono</label>
-                                            <input type="text" class="form-control" id="numeroTelefonico"
-                                                name="numeroTelefonico" value="{{ $paciente->numeroTelefonico }}"
-                                                required>
-                                        </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="fechaNacimiento" class="form-label">Fecha Nacimiento</label>
+                                        <input type="date" class="form-control" id="fechaNacimiento"
+                                            name="fechaNacimiento" value="{{ $paciente->fechaNacimiento }}" required>
                                     </div>
                                 </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
-                                </div>
-                            </form>
                         </div>
+
+                        <div class="col">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="numeroTelefonico" class="form-label">Tel&eacute;fono</label>
+                                    <input type="text" class="form-control" id="numeroTelefonico"
+                                        name="numeroTelefonico" value="{{ $paciente->numeroTelefonico }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        @endforeach
     </div>
+    @endforeach
+    </div>
+
+
 @endsection
 
 @section('js')
@@ -258,6 +268,7 @@
     <script
         src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/datatables.js">
     </script>
+
     <script>
         $(document).ready(function() {
             $('#pacientesTable').DataTable({
