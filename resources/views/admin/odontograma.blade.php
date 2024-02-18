@@ -373,7 +373,68 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalEditarDato" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Dato</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarDato" method="POST"
+                        action="{{ route('odontograma.update', ['odontograma' => ':datoId']) }}">
 
+                        @csrf
+                        @method('PUT')
+
+                        <div class="form-group">
+                            <label for="estadoDienteEdit">Estado de Diente</label>
+                            <select class="form-control" id="estadoDienteEdit">
+                                <option value="b">Bueno</option>
+                                <option value="f">Fracturado</option>
+                                <option value="r">Restaurado</option>
+                                <option value="e">Extraído</option>
+                                <option value="p">Puente</option>
+                                <option value="c">Carie</option>
+                                <option value="o">Obturación</option>
+                                <option value="a">Ausente</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="seccionDienteEdit">Sección de Diente</label>
+                            <select class="form-control" id="seccionDienteEdit" name="seccionDiente" required>
+                                <option value="" selected disabled>Seleccione una opción</option>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <option value="{{ $i }}">Sección {{ $i }}</option>
+                                @endfor
+                                <option value="1,2,3,4,5">Diente completo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observacionesEdit">Observaciones</label>
+                            <textarea class="form-control" id="observacionesEdit"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar
+                                Cambios</button>
+
+
+
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -381,6 +442,8 @@
 
     <script>
         var doc = $(document);
+        var idEdit;
+
 
         doc.on('click touchstart', '.tooth', function(event) {
             var $this = $(this),
@@ -500,6 +563,10 @@
 
                     if (datosDiente.length > 0) {
                         datosDiente.forEach(function(dato) {
+
+                            idEdit = dato.id;
+
+                            console.log("El id es: " + idEdit)
                             // Formatea la fecha sin usar moment.js
                             var fecha = new Date(dato.created_at);
                             var formattedFecha = fecha
@@ -559,13 +626,78 @@
         }
 
 
-
         // Función para editar un dato específico
         function editarDato(datoId) {
             // Agrega el código para editar el dato con el ID proporcionado
             console.log('Editar dato con ID:', datoId);
-            // Puedes redirigir a una página de edición o mostrar un modal, según tus necesidades
+
+            idEdit = datoId;
+
+            // Realiza una solicitud AJAX para obtener los datos del servidor
+            $.ajax({
+                url: '/odontograma/obtenerDatoPorId/' + datoId,
+                method: 'GET',
+                success: function(response) {
+                    // Rellena los campos del modal con los datos obtenidos
+                    $('#numeroDienteEdit').val(response.datosDiente.numeroDiente);
+
+                    // Establece la opción por defecto para el campo estadoDiente
+                    $('#estadoDienteEdit').val(response.datosDiente.estadoDiente);
+
+                    // Establece la opción por defecto para el campo seccionDienteEdit
+                    $('#seccionDienteEdit').val(response.datosDiente.seccionDiente);
+
+                    $('#observacionesEdit').val(response.datosDiente.observaciones);
+
+                    // Muestra el modal
+                    $('#modalEditarDato').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error al obtener datos:', error);
+                }
+            });
         }
+
+        function guardarCambios() {
+            console.log("El id es: " + idEdit);
+
+            // Obtén los valores de los campos del formulario
+            var estadoDiente = $('#estadoDienteEdit').val();
+            var seccionDiente = $('#seccionDienteEdit').val();
+            var observaciones = $('#observacionesEdit').val();
+
+            // Reemplaza el marcador de posición en la acción del formulario con el valor real de idEdit
+            $('#formEditarDato').attr('action', function(_, attr) {
+                return attr.replace(':datoId', idEdit);
+            });
+
+            // Realiza una solicitud AJAX para enviar los datos al servidor
+            $.ajax({
+                url: $('#formEditarDato').attr('action'),
+                method: 'POST',
+                data: {
+                    _method: 'PUT',
+                    estadoDiente: estadoDiente,
+                    seccionDiente: seccionDiente,
+                    observaciones: observaciones,
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    console.log(response);
+                    
+                    $('#modalEditarDato').modal('hide');
+                
+                    window.location.reload();
+                   
+                },
+                error: function(error) {
+                    console.error('Error al guardar cambios:', error);
+                  
+                }
+            });
+        }
+
+
 
 
         // Función para cargar dinámicamente las opciones del estado del diente

@@ -125,6 +125,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/odontogramas/{id}', [OdontogramaController::class, 'odontogramasPorPaciente'])->name('odontogramasPorPaciente');
     Route::get('/opciones', [OdontogramaController::class, 'opcionesEstadoDiente']);
     Route::get('/odontograma/obtenerDatosPorNumeroDiente/{paciente_id}/{numeroDiente}', [OdontogramaController::class, 'obtenerDatosPorNumeroDiente']);
+    Route::get('/odontograma/obtenerDatoPorId/{id}', [OdontogramaController::class, 'obtenerDatoPorId'])->name('odontograma.obtenerDatos');
     require __DIR__ . '/auth.php';
     Route::get('radiografias/{paciente_id}', [RadiografiasController::class, 'show'])->name('radiografia');
 });
